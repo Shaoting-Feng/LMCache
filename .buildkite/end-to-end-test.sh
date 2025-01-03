@@ -9,3 +9,4 @@ cd ../lmcache-tests
 python3 main.py tests/tests.py -f test_vary_length_workload -o outputs/
 cd ../end-to-end-tests/.buildkite
 python3 drawing_wrapper.py ../../lmcache-tests/outputs/
+mv ../../lmcache-tests/outputs/* ../
