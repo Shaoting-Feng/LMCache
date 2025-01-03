@@ -6,8 +6,7 @@ import sys
 
 sys.path.append('../../lmcache-tests/outputs')
 spec = importlib.util.spec_from_file_location(
-    "process_result",
-    "../../lmcache-tests/outputs//process_result.py")
+    "process_result", "../../lmcache-tests/outputs//process_result.py")
 process_result = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(process_result)
 
