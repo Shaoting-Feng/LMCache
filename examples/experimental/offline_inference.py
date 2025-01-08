@@ -91,7 +91,6 @@ t2 = time.perf_counter()
 print(f"\n\nFirst request Time: {t2 - t1} seconds\n\n")
 append_outputs(output_file, first_outputs, context_length, t2 - t1)
 t3 = time.perf_counter()
-prompts[0] += "Hello, world!"
 second_outputs = llm.generate(prompts, sampling_params)
 t4 = time.perf_counter()
 print(f"\n\nSecond request Time: {t4 - t3} seconds\n\n")
