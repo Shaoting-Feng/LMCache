@@ -2,9 +2,11 @@
 
 rm -rf ../lmcache-vllm
 git clone https://github.com/LMCache/lmcache-vllm.git ../lmcache-vllm
+cd ../lmcache-vllm
 git fetch --all
 git reset --hard origin/dev
 pip uninstall -y lmcache-vllm
+pip cache purge
 pip install .
 cd ../benchmark
 pip install -r ./benchmarks/requirements.txt
@@ -21,7 +23,6 @@ until grep -q "Uvicorn running on" lmcache_vllm.log; do
     exit 1
   fi
   sleep 10
-  echo "Waiting..."
   elapsed=$((elapsed + 10))
   echo "Waiting... ($elapsed seconds elapsed)"
 done
