@@ -20,6 +20,8 @@ conda activate ${CONDA_ENV_NAME}
 
 set -xe 
 
+export LD_LIBRARY_PATH=/dataheart/yihua98/Applications/anaconda3/envs/${CONDA_ENV_NAME}/lib/python3.10/site-packages/nvidia/nvjitlink/lib/:$LD_LIBRARY_PATH 
+
 pip install -r requirements.txt
 pip install -r requirements-test.txt
 pip install coverage
@@ -27,4 +29,3 @@ pip install coverage
 set +x
 echo "Current env:"
 pip freeze 
-
