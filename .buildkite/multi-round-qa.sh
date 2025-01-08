@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pip show lmcache
+
 rm -rf ../lmcache-vllm
 git clone https://github.com/LMCache/lmcache-vllm.git ../lmcache-vllm
 cd ../lmcache-vllm
@@ -11,6 +13,8 @@ pip install -e .
 
 cd ../benchmark
 pip install -r ./benchmarks/requirements.txt
+
+pip show lmcache
 
 lmcache_vllm serve mistralai/Mistral-7B-Instruct-v0.2 --disable-log-requests > lmcache_vllm.log 2>&1 &
 
