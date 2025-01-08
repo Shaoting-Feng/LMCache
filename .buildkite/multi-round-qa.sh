@@ -7,8 +7,7 @@ git fetch --all
 git reset --hard origin/dev
 pip uninstall -y lmcache-vllm
 pip cache purge
-pip install .
-git status
+pip install -e .
 cd ../benchmark
 pip install -r ./benchmarks/requirements.txt
 
