@@ -27,3 +27,4 @@ pip install coverage
 set +x
 echo "Current env:"
 pip freeze 
+
