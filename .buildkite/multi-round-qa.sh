@@ -2,6 +2,9 @@
 
 set -x
 
+# Install lmcache
+pip install -e .
+
 # Pull the latest lmcache-vllm
 cd ../lmcache-vllm
 git pull

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pip install -e .
+
 cd ../lmcache-vllm
 git pull
 
