@@ -2,16 +2,17 @@
 
 # pip install -e .
 
+set -x
+
 cd ../lmcache-vllm
 git pull
 
 pip install matplotlib
 
-rm -rf ../lmcache-tests
-cd ..
-git clone https://github.com/LMCache/lmcache-tests.git
 cd ../lmcache-tests
 git pull
+
+set +x
 
 port1=8000
 max_port=9000
@@ -44,10 +45,6 @@ done
 cd ../end-to-end-tests/.buildkite
 
 set -x
-
-ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/
-ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/
-ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/outputs/
 
 python3 drawing_wrapper.py ../../lmcache-tests/outputs/
 mv ../../lmcache-tests/outputs/*.{csv,pdf} ../
