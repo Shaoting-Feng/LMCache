@@ -14,6 +14,7 @@ set -x
 # Pull the latest lmcache-vllm
 cd ../lmcache-vllm
 git pull
+pip install -e .
 
 # Install requirements for benchmark scripts
 cd ../benchmark
