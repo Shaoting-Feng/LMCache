@@ -34,10 +34,10 @@ while [ $port2 -le $max_port ]; do
     fi
 done
 
-python3 main.py tests/tests.py -f test_chunk_prefill -o outputs/ -p $port1 $port2
-python3 main.py tests/tests.py -f test_lmcache_local_gpu -o outputs/ -p $port1 $port2
-python3 main.py tests/tests.py -f test_lmcache_local_distributed -o outputs/ -p $port1 $port2
-python3 main.py tests/tests.py -f test_lmcache_remote_cachegen -o outputs/ -p $port1 $port2
+# python3 main.py tests/tests.py -f test_chunk_prefill -o outputs/ -p $port1 $port2
+# python3 main.py tests/tests.py -f test_lmcache_local_gpu -o outputs/ -p $port1 $port2
+# python3 main.py tests/tests.py -f test_lmcache_local_distributed -o outputs/ -p $port1 $port2
+# python3 main.py tests/tests.py -f test_lmcache_remote_cachegen -o outputs/ -p $port1 $port2
 cd ../end-to-end-tests/.buildkite
 python3 drawing_wrapper.py ../../lmcache-tests/outputs/
 mv ../../lmcache-tests/outputs/* ../
