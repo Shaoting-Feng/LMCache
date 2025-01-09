@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# pip install -e .
+pip install -e .
 
 set -x
 
@@ -38,6 +38,7 @@ while [ $port2 -le $max_port ]; do
     fi
 done
 
+python3 main.py tests/tests.py -f vary -o outputs/ -p $port1 $port2
 # python3 main.py tests/tests.py -f test_chunk_prefill -o outputs/ -p $port1 $port2
 # python3 main.py tests/tests.py -f test_lmcache_local_gpu -o outputs/ -p $port1 $port2
 # python3 main.py tests/tests.py -f test_lmcache_local_distributed -o outputs/ -p $port1 $port2
