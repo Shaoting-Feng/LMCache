@@ -1,6 +1,14 @@
 #!/bin/bash
 
+pip install -e .
+
+cd ../lmcache-vllm
+git pull
+
+pip install matplotlib
+
 cd ../lmcache-tests
+git pull
 
 port1=8000
 max_port=9000
