@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pip install -e .
+# pip install -e .
 
 cd ../lmcache-vllm
 git pull
@@ -40,9 +40,11 @@ done
 # python3 main.py tests/tests.py -f test_lmcache_remote_cachegen -o outputs/ -p $port1 $port2
 cd ../end-to-end-tests/.buildkite
 
-ls /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/
-ls /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/
-ls /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/outputs/
+set -e
+
+ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/
+ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/
+ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/outputs/
 
 python3 drawing_wrapper.py ../../lmcache-tests/outputs/
 mv ../../lmcache-tests/outputs/* ../
