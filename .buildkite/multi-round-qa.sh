@@ -22,6 +22,8 @@ git pull
 cd ../benchmark
 pip install -r ./benchmarks/requirements.txt
 
+python -c "import torch; import lmcache.c_ops;"
+
 set +x
 
 # Start the server
