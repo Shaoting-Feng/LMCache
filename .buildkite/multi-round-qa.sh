@@ -1,13 +1,21 @@
 #!/bin/bash
 
-pip uninstall -y lmcache-vllm
-rm -rf ../lmcache-vllm
-git clone https://github.com/LMCache/lmcache-vllm.git ../lmcache-vllm
-cd ../lmcache-vllm
-git fetch --all
-git reset --hard origin/dev
-pip cache purge
-pip install -e .
+# pip uninstall -y lmcache-vllm
+# rm -rf ../lmcache-vllm
+# git clone https://github.com/LMCache/lmcache-vllm.git ../lmcache-vllm
+# cd ../lmcache-vllm
+# git fetch --all
+# git reset --hard origin/dev
+# pip cache purge
+# pip install -e .
+
+set -x
+
+pip show lmcache-vllm
+cd ..
+pwd
+ls -a 
+cd benchmark
 
 cd ../benchmark
 pip install -r ./benchmarks/requirements.txt
