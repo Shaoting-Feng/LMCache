@@ -39,5 +39,10 @@ done
 # python3 main.py tests/tests.py -f test_lmcache_local_distributed -o outputs/ -p $port1 $port2
 # python3 main.py tests/tests.py -f test_lmcache_remote_cachegen -o outputs/ -p $port1 $port2
 cd ../end-to-end-tests/.buildkite
+
+ls /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/
+ls /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/
+ls /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/outputs/
+
 python3 drawing_wrapper.py ../../lmcache-tests/outputs/
 mv ../../lmcache-tests/outputs/* ../
