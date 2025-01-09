@@ -1,18 +1,6 @@
 #!/bin/bash
 
-# pip uninstall -y lmcache-vllm
-# rm -rf ../lmcache-vllm
-# git clone https://github.com/LMCache/lmcache-vllm.git ../lmcache-vllm
-# cd ../lmcache-vllm
-# git fetch --all
-# git reset --hard origin/dev
-# pip cache purge
-# pip install -e .
-
 set -x
-
-# Ensure right path for lmcache
-rm -rf ../end-to-end-tests
 
 # Pull the latest lmcache-vllm
 cd ../lmcache-vllm
@@ -21,8 +9,6 @@ git pull
 # Install requirements for benchmark scripts
 cd ../benchmark
 pip install -r ./benchmarks/requirements.txt
-
-python -c "import torch; import lmcache.c_ops;"
 
 set +x
 

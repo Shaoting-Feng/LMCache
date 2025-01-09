@@ -18,5 +18,12 @@ export PATH=$CUDA_HOME/bin:$PATH
 eval "$(conda shell.bash hook)"
 conda activate ${CONDA_ENV_NAME}
 
+set -xe 
+
+pip install -r requirements.txt
+pip install -r requirements-test.txt
+pip install coverage
+
+set +x
 echo "Current env:"
 pip freeze 
