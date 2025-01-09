@@ -40,7 +40,7 @@ done
 # python3 main.py tests/tests.py -f test_lmcache_remote_cachegen -o outputs/ -p $port1 $port2
 cd ../end-to-end-tests/.buildkite
 
-set -e
+set -x
 
 ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/
 ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/
