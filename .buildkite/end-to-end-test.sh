@@ -7,6 +7,8 @@ git pull
 
 pip install matplotlib
 
+rm -rf ../lmcache-tests
+git clone https://github.com/LMCache/lmcache-tests.git
 cd ../lmcache-tests
 git pull
 
@@ -47,4 +49,4 @@ ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/
 ls -a /local/yihua98/.buildkite-agent/builds/nature-1/lmcache/lmcache-tests/outputs/
 
 python3 drawing_wrapper.py ../../lmcache-tests/outputs/
-mv ../../lmcache-tests/outputs/* ../
+mv ../../lmcache-tests/outputs/*.{csv,pdf} ../
