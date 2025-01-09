@@ -8,6 +8,7 @@ git pull
 pip install matplotlib
 
 rm -rf ../lmcache-tests
+cd ..
 git clone https://github.com/LMCache/lmcache-tests.git
 cd ../lmcache-tests
 git pull
