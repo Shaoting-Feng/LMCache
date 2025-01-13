@@ -245,6 +245,7 @@ class UserSession:
                 max_tokens = self.sharegpt_data['conversations'][2*self.question_id]['num_tokens']
             else:
                 max_tokens = self.sharegpt_data['conversations'][2*self.question_id-1]['num_tokens']
+            max_tokens = min(max_tokens, self.user_config.answer_len)
         else:
             max_tokens = self.user_config.answer_len
         request_executor.launch_request(

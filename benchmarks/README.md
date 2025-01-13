@@ -57,7 +57,7 @@ vllm serve mistralai/Mistral-7B-Instruct-v0.2 --disable-log-requests
 - `--request-with-user-id`: If this option is present, the script will include the user ID in the request header.
 - `--sharegpt`: If this option is present, the script will use ShareGPT workload instead of dummy context.
 
-*Note:* If you use ShareGPT dataset, the length of the answer expected (in tokens) will be determined by the dataset instead of `--answer-len`. You also need to follow the instructions in **ShareGPT Datasets** first.
+*Note:* If you use ShareGPT dataset, the length of the answer expected (in tokens) will be determined by the min value of the dataset response and  `--answer-len`. You also need to follow the instructions in **ShareGPT Datasets** first.
 
 #### Configuring the serving engine connection
 - `--model <str>`: The model name (e.g., `mistralai/Mistral-7B-Instruct-v0.2`).
@@ -95,18 +95,25 @@ The `multi-round-qa.py` script works by:
 
 ## ShareGPT Datasets
 
-1. Downloading the ShareGPT dataset
-    You can download the dataset by running:
+1. Download and prepare the ShareGPT dataset 
+    You can change how much data to process in the script.
 
     ```bash
-     wget https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/resolve/main/ShareGPT_V3_unfiltered_cleaned_split.json
+    bash prepare_sharegpt_data.sh
     ```
 
-2. Processing the dataset
-    You can add token statistics information to the dataset by running:
+2. Run the benchmark
+    Example:
 
     ```bash
-    python3 find_pattern.py
+    python3 multi-round-qa.py \
+        --num-users 10 \
+        --num-rounds 5 \
+        --qps 0.3 \
+        --shared-system-prompt 1000 \
+        --user-history-prompt 2000 \
+        --answer-len 100 \
+        --model mistralai/Mistral-7B-Instruct-v0.2 \
+        --base-url http://localhost:8000/v1 \
+        --sharegpt
     ```
-
-    Now you get `ShareGPT.json` for the benchmark scripts.
