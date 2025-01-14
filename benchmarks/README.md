@@ -9,7 +9,6 @@ This repository contains benchmarking tools for evaluating the performance of la
 - **Multi-Round QA Benchmark**: Simulates a realistic multi-user, multi-turn question-answering session to evaluate key metrics such as token throughput, latency, and average response times.
 
 ### Upcoming feature
-- **ShareGPT** dataset support
 - **RAG** benchmark
 
 ## Setup
