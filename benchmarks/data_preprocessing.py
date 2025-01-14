@@ -2,23 +2,29 @@ import json
 from transformers import AutoTokenizer
 import os
 import numpy as np
-import time
 import argparse
 
 parser = argparse.ArgumentParser(description="Process data percentage.")
-parser.add_argument("--parse", type=float, default=1, 
-                    help="The percentage of data to process (0 to 1). Default is 1 (100%).")
+parser.add_argument(
+    "--parse",
+    type=float,
+    default=1,
+    help="The percentage of data to process (0 to 1). Default is 1 (100%).")
 
 args = parser.parse_args()
 
-with open('ShareGPT_V3_unfiltered_cleaned_split.json', 'r', encoding='utf-8') as file:
-    data = json.load(file) 
+with open('ShareGPT_V3_unfiltered_cleaned_split.json', 'r',
+          encoding='utf-8') as file:
+    data = json.load(file)
+
 
 def estimate_num_tokens(text: str) -> int:
     if not hasattr(estimate_num_tokens, "tokenizer"):
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
-        estimate_num_tokens.tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-Instruct-v0.2")
+        estimate_num_tokens.tokenizer = AutoTokenizer.from_pretrained(
+            "mistralai/Mistral-7B-Instruct-v0.2")
     return len(estimate_num_tokens.tokenizer.tokenize(text))
+
 
 num_of_ids = len(data)
 print(f"Number of IDs: {num_of_ids}")
@@ -27,7 +33,8 @@ data = data[:int(num_of_ids * args.parse)]
 count = 0
 
 for d in data:
-    d['num_round'] = len(d['conversations']) # human is one round, gpt is another round
+    d['num_round'] = len(
+        d['conversations'])  # human is one round, gpt is another round
     human_tokens = []
     gpt_tokens = []
     for conv in d['conversations']:
