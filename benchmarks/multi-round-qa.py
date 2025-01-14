@@ -1,10 +1,10 @@
 import argparse
 import asyncio
+import json
 import logging
 import time
 from dataclasses import dataclass
 from typing import Optional
-import json
 
 import openai
 import pandas as pd
@@ -174,7 +174,10 @@ class RequestExecutor:
 
 class UserSession:
 
-    def __init__(self, user_config: UserConfig, use_sharegpt=False, sharegpt_data=None):
+    def __init__(self,
+                 user_config: UserConfig,
+                 use_sharegpt=False,
+                 sharegpt_data=None):
         self.user_config = user_config
         self.last_request_time = None
         self.chat_history = ChatHistory()
@@ -228,9 +231,12 @@ class UserSession:
                             request_executor: RequestExecutor):
         if self.use_sharegpt:
             if self.start_with_gpt:
-                prompt = self.sharegpt_data['conversations'][2*self.question_id+1]['value']
+                prompt = self.sharegpt_data['conversations'][2 *
+                                                             self.question_id +
+                                                             1]['value']
             else:
-                prompt = self.sharegpt_data['conversations'][2*self.question_id]['value']
+                prompt = self.sharegpt_data['conversations'][
+                    2 * self.question_id]['value']
             self.question_id += 1
         else:
             prompt = self._build_new_question()
@@ -242,9 +248,11 @@ class UserSession:
         )
         if self.use_sharegpt:
             if self.start_with_gpt:
-                max_tokens = self.sharegpt_data['conversations'][2*self.question_id]['num_tokens']
+                max_tokens = self.sharegpt_data['conversations'][
+                    2 * self.question_id]['num_tokens']
             else:
-                max_tokens = self.sharegpt_data['conversations'][2*self.question_id-1]['num_tokens']
+                max_tokens = self.sharegpt_data['conversations'][
+                    2 * self.question_id - 1]['num_tokens']
             max_tokens = min(max_tokens, self.user_config.answer_len)
         else:
             max_tokens = self.user_config.answer_len
@@ -320,7 +328,10 @@ class UserSession:
 
 class UserSessionManager:
 
-    def __init__(self, workload_config: WorkloadConfig, init_user_id=0, use_sharegpt=False):
+    def __init__(self,
+                 workload_config: WorkloadConfig,
+                 init_user_id=0,
+                 use_sharegpt=False):
         self.workload_config = workload_config
         self.sessions = []
 
@@ -350,10 +361,12 @@ class UserSessionManager:
 
     def _load_sharegpt_data(self):
         with open('ShareGPT.json', 'r', encoding='utf-8') as file:
-            self.sharegpt_data = json.load(file) 
-        self.sharegpt_data = [d for d in self.sharegpt_data if d['num_round'] > 2 * self.workload_config.num_rounds]
-        logger.info(
-            f"There are {len(self.sharegpt_data)} users satisfying ")
+            self.sharegpt_data = json.load(file)
+        self.sharegpt_data = [
+            d for d in self.sharegpt_data
+            if d['num_round'] > 2 * self.workload_config.num_rounds
+        ]
+        logger.info(f"There are {len(self.sharegpt_data)} users satisfying ")
 
     def _ramp_up(self, timestamp: float, ramp_up_time: float):
         for i in range(self.workload_config.num_users):
@@ -369,7 +382,8 @@ class UserSessionManager:
         user_config = UserConfig.new_user_config(self.user_id,
                                                  self.workload_config)
         if self.use_sharegpt:
-            user_session = UserSession(user_config, self.use_sharegpt, self.sharegpt_data[self.user_id])
+            user_session = UserSession(user_config, self.use_sharegpt,
+                                       self.sharegpt_data[self.user_id])
         else:
             user_session = UserSession(user_config, self.use_sharegpt)
         self.sessions.append(user_session)
