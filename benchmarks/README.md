@@ -96,11 +96,13 @@ The `multi-round-qa.py` script works by:
 ## ShareGPT Datasets
 
 1. Download and prepare the ShareGPT dataset 
-    You can change how much data to process in the script.
+    You can specify the proportion of data to process by providing a number between 0 and 1 as an argument to the script.
 
     ```bash
-    bash prepare_sharegpt_data.sh
+    bash prepare_sharegpt_data.sh 1
     ```
+
+    In this example, 1 indicates processing 100% of the dataset. You can adjust this value as needed.
 
 2. Run the benchmark
     Example:
