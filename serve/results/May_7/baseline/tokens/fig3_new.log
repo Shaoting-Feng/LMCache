@@ -1,0 +1,1127 @@
+INFO 05-08 18:55:36 __init__.py:186] Automatically detected platform cuda.
+INFO 05-08 18:55:37 api_server.py:840] vLLM API server version 0.1.dev4433+geb5db26
+INFO 05-08 18:55:37 api_server.py:841] args: Namespace(subparser='serve', model_tag='meta-llama/Llama-3.1-8B-Instruct', config='', host=None, port=8000, uvicorn_log_level='info', allow_credentials=False, allowed_origins=['*'], allowed_methods=['*'], allowed_headers=['*'], api_key=None, lora_modules=None, prompt_adapters=None, chat_template=None, chat_template_content_format='auto', response_role='assistant', ssl_keyfile=None, ssl_certfile=None, ssl_ca_certs=None, ssl_cert_reqs=0, root_path=None, middleware=[], return_tokens_as_token_ids=False, disable_frontend_multiprocessing=False, enable_request_id_headers=False, enable_auto_tool_choice=False, enable_reasoning=False, reasoning_parser=None, tool_call_parser=None, tool_parser_plugin='', model='meta-llama/Llama-3.1-8B-Instruct', task='auto', tokenizer=None, skip_tokenizer_init=False, revision=None, code_revision=None, tokenizer_revision=None, tokenizer_mode='auto', trust_remote_code=True, allowed_local_media_path=None, download_dir=None, load_format='auto', config_format=<ConfigFormat.AUTO: 'auto'>, dtype='auto', kv_cache_dtype='auto', max_model_len=50000, guided_decoding_backend='xgrammar', logits_processor_pattern=None, model_impl='auto', distributed_executor_backend=None, pipeline_parallel_size=1, tensor_parallel_size=1, max_parallel_loading_workers=None, ray_workers_use_nsight=False, block_size=None, enable_prefix_caching=None, disable_sliding_window=False, use_v2_block_manager=True, num_lookahead_slots=0, seed=0, swap_space=4, cpu_offload_gb=0, gpu_memory_utilization=0.9, num_gpu_blocks_override=None, max_num_batched_tokens=None, max_num_seqs=None, max_logprobs=20, disable_log_stats=True, quantization=None, rope_scaling=None, rope_theta=None, hf_overrides=None, enforce_eager=False, max_seq_len_to_capture=8192, disable_custom_all_reduce=False, tokenizer_pool_size=0, tokenizer_pool_type='ray', tokenizer_pool_extra_config=None, limit_mm_per_prompt=None, mm_processor_kwargs=None, disable_mm_preprocessor_cache=False, enable_lora=False, enable_lora_bias=False, max_loras=1, max_lora_rank=16, lora_extra_vocab_size=256, lora_dtype='auto', long_lora_scaling_factors=None, max_cpu_loras=None, fully_sharded_loras=False, enable_prompt_adapter=False, max_prompt_adapters=1, max_prompt_adapter_token=0, device='auto', num_scheduler_steps=1, multi_step_stream_outputs=True, scheduler_delay_factor=0.0, enable_chunked_prefill=False, speculative_model=None, speculative_model_quantization=None, num_speculative_tokens=None, speculative_disable_mqa_scorer=False, speculative_draft_tensor_parallel_size=None, speculative_max_model_len=None, speculative_disable_by_batch_size=None, ngram_prompt_lookup_max=None, ngram_prompt_lookup_min=None, spec_decoding_acceptance_method='rejection_sampler', typical_acceptance_sampler_posterior_threshold=None, typical_acceptance_sampler_posterior_alpha=None, disable_logprobs_during_spec_decoding=None, model_loader_extra_config=None, ignore_patterns=[], preemption_mode=None, served_model_name=None, qlora_adapter_name_or_path=None, otlp_traces_endpoint=None, collect_detailed_traces=None, disable_async_output_proc=False, scheduling_policy='fcfs', override_neuron_config=None, override_pooler_config=None, compilation_config=None, kv_transfer_config=KVTransferConfig(kv_connector='LMCacheConnector', kv_buffer_device='cuda', kv_buffer_size=1000000000.0, kv_role='kv_both', kv_rank=None, kv_parallel_size=1, kv_ip='127.0.0.1', kv_port=14579), worker_cls='auto', generation_config=None, override_generation_config=None, enable_sleep_mode=False, calculate_kv_scales=False, disable_log_requests=False, max_log_len=None, disable_fastapi_docs=False, enable_prompt_tokens_details=False, dispatch_function=<function serve at 0x75ed42c5d6c0>)
+INFO 05-08 18:55:37 api_server.py:206] Started engine process with PID 1138774
+INFO 05-08 18:55:41 __init__.py:186] Automatically detected platform cuda.
+INFO 05-08 18:55:44 config.py:542] This model supports multiple tasks: {'reward', 'generate', 'classify', 'embed', 'score'}. Defaulting to 'generate'.
+WARNING 05-08 18:55:44 arg_utils.py:1145] The model has a long context length (50000). This may cause OOM errors during the initial memory profiling phase, or result in low performance due to small KV cache space. Consider setting --max-model-len to a smaller value.
+INFO 05-08 18:55:49 config.py:542] This model supports multiple tasks: {'score', 'classify', 'generate', 'reward', 'embed'}. Defaulting to 'generate'.
+WARNING 05-08 18:55:49 arg_utils.py:1145] The model has a long context length (50000). This may cause OOM errors during the initial memory profiling phase, or result in low performance due to small KV cache space. Consider setting --max-model-len to a smaller value.
+INFO 05-08 18:55:49 llm_engine.py:234] Initializing a V0 LLM engine (v0.1.dev4433+geb5db26) with config: model='meta-llama/Llama-3.1-8B-Instruct', speculative_config=None, tokenizer='meta-llama/Llama-3.1-8B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=50000, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto,  device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='xgrammar'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=meta-llama/Llama-3.1-8B-Instruct, num_scheduler_steps=1, multi_step_stream_outputs=True, enable_prefix_caching=False, chunked_prefill_enabled=False, use_async_output_proc=True, disable_mm_preprocessor_cache=False, mm_processor_kwargs=None, pooler_config=None, compilation_config={"splitting_ops":[],"compile_sizes":[],"cudagraph_capture_sizes":[256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"max_capture_size":256}, use_cached_outputs=True, 
+INFO 05-08 18:55:51 cuda.py:230] Using Flash Attention backend.
+INFO 05-08 18:55:51 lmcache_connector.py:42] Initializing LMCacheConfig under kv_transfer_config kv_connector='LMCacheConnector' kv_buffer_device='cuda' kv_buffer_size=1000000000.0 kv_role='kv_both' kv_rank=None kv_parallel_size=1 kv_ip='127.0.0.1' kv_port=14579
+[33mINFO LMCache: [0mLoading LMCache config file ../config/qmsum4_fig3.yaml [2025-05-08 18:55:51,581] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/utils.py:32
+[33mINFO LMCache: [0mCreating LMCacheEngine instance vllm-instance [2025-05-08 18:55:51,585] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/cache_engine.py:265
+[33mINFO LMCache: [0mChunkedTokenDatabase initialized with alpha 0.7. [2025-05-08 18:56:51,671] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/token_database.py:69
+[33mINFO LMCache: [0mKVCacheManager initialized with self.method: baseline_KIVI and self.rate: 0.728571429 [2025-05-08 18:56:51,673] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:93
+[33mINFO LMCache: [0mInitializing usage context. [2025-05-08 18:56:51,673] -- /home/ubuntu/cache_serve/LMCache/lmcache/usage_context.py:235
+[33mDEBUG LMCache: [0mcontext message updated [2025-05-08 18:56:52,826] -- /home/ubuntu/cache_serve/LMCache/lmcache/usage_context.py:98
+[33mDEBUG LMCache: [0mcontext message updated [2025-05-08 18:56:53,164] -- /home/ubuntu/cache_serve/LMCache/lmcache/usage_context.py:98
+[33mDEBUG LMCache: [0mcontext message updated [2025-05-08 18:56:53,452] -- /home/ubuntu/cache_serve/LMCache/lmcache/usage_context.py:98
+INFO 05-08 18:56:53 model_runner.py:1115] Starting to load model meta-llama/Llama-3.1-8B-Instruct...
+INFO 05-08 18:56:54 weight_utils.py:252] Using model weights format ['*.safetensors']
+Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:00<00:01,  1.50it/s]
+Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:01<00:01,  1.97it/s]
+Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:01<00:00,  1.68it/s]
+Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:02<00:00,  1.40it/s]
+Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:02<00:00,  1.50it/s]
+
+INFO 05-08 18:56:57 model_runner.py:1120] Loading model weights took 14.9888 GB
+INFO 05-08 18:57:00 worker.py:267] Memory profiling takes 3.34 seconds
+INFO 05-08 18:57:00 worker.py:267] the current vLLM instance can use total_gpu_memory (39.49GiB) x gpu_memory_utilization (0.90) = 35.55GiB
+INFO 05-08 18:57:00 worker.py:267] model weights take 14.99GiB; non_torch_memory takes 0.25GiB; PyTorch activation peak memory takes 5.16GiB; the rest of the memory reserved for KV Cache is 15.14GiB.
+INFO 05-08 18:57:01 executor_base.py:110] # CUDA blocks: 7754, # CPU blocks: 2048
+INFO 05-08 18:57:01 executor_base.py:115] Maximum concurrency for 50000 tokens per request: 2.48x
+INFO 05-08 18:57:04 model_runner.py:1439] Capturing cudagraphs for decoding. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI. If out-of-memory error occurs during cudagraph capture, consider decreasing `gpu_memory_utilization` or switching to eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+Capturing CUDA graph shapes:   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graph shapes:   3%|▎         | 1/35 [00:00<00:13,  2.47it/s]Capturing CUDA graph shapes:   6%|▌         | 2/35 [00:01<00:17,  1.93it/s]Capturing CUDA graph shapes:   9%|▊         | 3/35 [00:01<00:14,  2.14it/s]Capturing CUDA graph shapes:  11%|█▏        | 4/35 [00:01<00:13,  2.29it/s]Capturing CUDA graph shapes:  14%|█▍        | 5/35 [00:02<00:12,  2.41it/s]Capturing CUDA graph shapes:  17%|█▋        | 6/35 [00:02<00:11,  2.48it/s]Capturing CUDA graph shapes:  20%|██        | 7/35 [00:03<00:13,  2.11it/s]Capturing CUDA graph shapes:  23%|██▎       | 8/35 [00:03<00:12,  2.12it/s]Capturing CUDA graph shapes:  26%|██▌       | 9/35 [00:04<00:11,  2.27it/s]Capturing CUDA graph shapes:  29%|██▊       | 10/35 [00:04<00:10,  2.38it/s]Capturing CUDA graph shapes:  31%|███▏      | 11/35 [00:04<00:09,  2.46it/s]Capturing CUDA graph shapes:  34%|███▍      | 12/35 [00:05<00:09,  2.52it/s]Capturing CUDA graph shapes:  37%|███▋      | 13/35 [00:05<00:09,  2.25it/s]Capturing CUDA graph shapes:  40%|████      | 14/35 [00:06<00:08,  2.35it/s]Capturing CUDA graph shapes:  43%|████▎     | 15/35 [00:06<00:08,  2.39it/s]Capturing CUDA graph shapes:  46%|████▌     | 16/35 [00:06<00:07,  2.41it/s]Capturing CUDA graph shapes:  49%|████▊     | 17/35 [00:07<00:07,  2.42it/s]Capturing CUDA graph shapes:  51%|█████▏    | 18/35 [00:07<00:07,  2.18it/s]Capturing CUDA graph shapes:  54%|█████▍    | 19/35 [00:08<00:07,  2.22it/s]Capturing CUDA graph shapes:  57%|█████▋    | 20/35 [00:08<00:06,  2.18it/s]Capturing CUDA graph shapes:  60%|██████    | 21/35 [00:09<00:06,  2.30it/s]Capturing CUDA graph shapes:  63%|██████▎   | 22/35 [00:09<00:05,  2.40it/s]Capturing CUDA graph shapes:  66%|██████▌   | 23/35 [00:09<00:04,  2.48it/s]Capturing CUDA graph shapes:  69%|██████▊   | 24/35 [00:10<00:04,  2.39it/s]Capturing CUDA graph shapes:  71%|███████▏  | 25/35 [00:10<00:04,  2.47it/s]Capturing CUDA graph shapes:  74%|███████▍  | 26/35 [00:11<00:03,  2.53it/s]Capturing CUDA graph shapes:  77%|███████▋  | 27/35 [00:11<00:03,  2.56it/s]Capturing CUDA graph shapes:  80%|████████  | 28/35 [00:11<00:02,  2.59it/s]Capturing CUDA graph shapes:  83%|████████▎ | 29/35 [00:12<00:02,  2.12it/s]Capturing CUDA graph shapes:  86%|████████▌ | 30/35 [00:12<00:02,  2.25it/s]Capturing CUDA graph shapes:  89%|████████▊ | 31/35 [00:13<00:01,  2.37it/s]Capturing CUDA graph shapes:  91%|█████████▏| 32/35 [00:13<00:01,  2.46it/s]Capturing CUDA graph shapes:  94%|█████████▍| 33/35 [00:14<00:00,  2.40it/s]Capturing CUDA graph shapes:  97%|█████████▋| 34/35 [00:14<00:00,  2.49it/s]Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:14<00:00,  2.54it/s]Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:14<00:00,  2.36it/s]
+INFO 05-08 18:57:19 model_runner.py:1567] Graph capturing finished in 15 secs, took 0.24 GiB
+INFO 05-08 18:57:19 llm_engine.py:431] init engine (profile, create kv cache, warmup model) took 22.41 seconds
+INFO 05-08 18:57:19 api_server.py:756] Using supplied chat template:
+INFO 05-08 18:57:19 api_server.py:756] None
+INFO 05-08 18:57:19 launcher.py:21] Available routes are:
+INFO 05-08 18:57:19 launcher.py:29] Route: /openapi.json, Methods: HEAD, GET
+INFO 05-08 18:57:19 launcher.py:29] Route: /docs, Methods: HEAD, GET
+INFO 05-08 18:57:19 launcher.py:29] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+INFO 05-08 18:57:19 launcher.py:29] Route: /redoc, Methods: HEAD, GET
+INFO 05-08 18:57:19 launcher.py:29] Route: /health, Methods: GET
+INFO 05-08 18:57:19 launcher.py:29] Route: /ping, Methods: GET, POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /tokenize, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /detokenize, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /v1/models, Methods: GET
+INFO 05-08 18:57:19 launcher.py:29] Route: /version, Methods: GET
+INFO 05-08 18:57:19 launcher.py:29] Route: /v1/chat/completions, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /v1/completions, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /v1/embeddings, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /pooling, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /score, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /v1/score, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /rerank, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /v1/rerank, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /v2/rerank, Methods: POST
+INFO 05-08 18:57:19 launcher.py:29] Route: /invocations, Methods: POST
+INFO:     Started server process [1138702]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO 05-08 18:57:44 chat_utils.py:332] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:44 engine.py:275] Added request chatcmpl-954eb8e42c66472d8372a6ba98fbe770.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:57:44,902] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:57:44,902] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8757 tokens [2025-05-08 18:57:45,799] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:46 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:47 engine.py:275] Added request chatcmpl-2905cedc5e4b4139abe9ee98b64e00db.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:57:47,319] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:57:47,319] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8550 tokens [2025-05-08 18:57:48,186] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:48 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:48 engine.py:275] Added request chatcmpl-2e7fe7b10484434d9316264a3130d0f7.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:57:48,914] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:57:48,914] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 9358 tokens [2025-05-08 18:57:49,869] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:50 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:50 engine.py:275] Added request chatcmpl-1b4ccc37f7ed4e38bd966d33747c04dc.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,838] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,855] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,871] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,888] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,904] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,920] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,936] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,952] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:50,970] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8756 [2025-05-08 18:57:50,970] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:57:50,979] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8757 tokens and then stores 0 tokens [2025-05-08 18:57:50,999] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:51 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:51 engine.py:275] Added request chatcmpl-3097ea6daebc46ebbb054111c7daecaa.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,666] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,682] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,699] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,715] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,731] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,749] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,766] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,782] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:51,799] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8756 [2025-05-08 18:57:51,799] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:57:51,808] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8757 tokens and then stores 0 tokens [2025-05-08 18:57:51,826] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:52 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:52 engine.py:275] Added request chatcmpl-973a851bbbb94072ad175528ded1b5a4.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:57:52,482] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:57:52,482] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8607 tokens [2025-05-08 18:57:53,364] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:53 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:54 engine.py:275] Added request chatcmpl-0af1bef630504b2f9361ae4714c66f00.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:57:54,213] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:57:54,214] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 9054 tokens [2025-05-08 18:57:55,136] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:55 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:55 engine.py:275] Added request chatcmpl-c813a004cb464acf8e516c57bb7ecea9.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:57:55,870] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:57:55,870] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 9537 tokens [2025-05-08 18:57:56,853] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:58 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:58 engine.py:275] Added request chatcmpl-f24a46374e154517be17ab22bcc4919a.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,880] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,897] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,913] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,930] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,946] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,963] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,979] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:58,996] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:57:59,014] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9053 [2025-05-08 18:57:59,015] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:57:59,024] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9054 tokens and then stores 0 tokens [2025-05-08 18:57:59,043] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:57:59 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:57:59 engine.py:275] Added request chatcmpl-18bb171a4db14fd1a4050862ac747dd5.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:57:59,406] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:57:59,406] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8502 tokens [2025-05-08 18:58:00,273] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:00 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:01 engine.py:275] Added request chatcmpl-b736232a547c44548f23004dea373ddf.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:01,366] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:01,366] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8215 tokens [2025-05-08 18:58:02,205] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:02 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:03 engine.py:275] Added request chatcmpl-6ac34157a8484aa1afaa3d2c967c0b39.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:03,008] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:03,008] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8512 tokens [2025-05-08 18:58:03,876] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:04 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:04 engine.py:275] Added request chatcmpl-5143e762026449ee990274a0aec408cb.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,444] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,460] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,477] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,493] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,509] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,526] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,542] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,559] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,575] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:04,591] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9536 [2025-05-08 18:58:04,592] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:04,601] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9537 tokens and then stores 0 tokens [2025-05-08 18:58:04,621] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:06 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:06 engine.py:275] Added request chatcmpl-8258bc47c03c453dafbbf76bf156778b.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:06,245] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:06,245] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 9667 tokens [2025-05-08 18:58:07,260] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:07 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:08 engine.py:275] Added request chatcmpl-9db1101fc33f4d6b874ac56873901cc2.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,255] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,271] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,288] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,304] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,320] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,337] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,353] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,369] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:08,386] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8511 [2025-05-08 18:58:08,386] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:08,395] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8512 tokens and then stores 0 tokens [2025-05-08 18:58:08,414] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:08 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:08 engine.py:275] Added request chatcmpl-46627c5cc654439cae24d4e99ea6983f.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:08,658] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:08,658] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8434 tokens [2025-05-08 18:58:09,508] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:10 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:10 engine.py:275] Added request chatcmpl-aed1cb00f26e43e9ab7a8de26e75eb4e.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,659] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,675] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,692] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,708] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,724] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,741] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,757] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,774] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:10,791] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8606 [2025-05-08 18:58:10,791] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:10,800] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8607 tokens and then stores 0 tokens [2025-05-08 18:58:10,819] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:11 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:11 engine.py:275] Added request chatcmpl-35791e636a424930937b5a049986e06e.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:11,322] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:11,322] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 9415 tokens [2025-05-08 18:58:12,285] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:12 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:13 engine.py:275] Added request chatcmpl-f5ab870d33b5418fa99efa19672fcd1e.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:13,594] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:13,594] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 9350 tokens [2025-05-08 18:58:14,554] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:14 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:15 engine.py:275] Added request chatcmpl-2c786d34d6eb4d3aacf25429a655d458.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,320] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,337] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,354] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,370] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,386] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,403] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,419] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,436] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,452] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:15,469] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9414 [2025-05-08 18:58:15,469] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:15,478] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9415 tokens and then stores 0 tokens [2025-05-08 18:58:15,498] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:16 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:16 engine.py:275] Added request chatcmpl-dc9a720ca1ce4c6d9b294bb218cf3818.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,238] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,254] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,271] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,287] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,304] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,320] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,337] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,353] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,370] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8606 [2025-05-08 18:58:16,370] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:16,379] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8607 tokens and then stores 0 tokens [2025-05-08 18:58:16,397] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:16 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:16 engine.py:275] Added request chatcmpl-33416fb57dc24b899ab1997513327c7d.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,913] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,929] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,946] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,962] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,979] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:16,995] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,011] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,028] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,045] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8549 [2025-05-08 18:58:17,045] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:17,053] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8550 tokens and then stores 0 tokens [2025-05-08 18:58:17,072] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:17 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:17 engine.py:275] Added request chatcmpl-9aa02f44771645f193121889d7735dc7.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,464] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,481] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,497] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,513] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,530] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,546] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,563] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,580] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:17,596] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8433 [2025-05-08 18:58:17,596] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:17,605] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8434 tokens and then stores 0 tokens [2025-05-08 18:58:17,623] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:18 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:18 engine.py:275] Added request chatcmpl-b3bcef105479484d9574b0dcdb5d8ea3.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,461] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,477] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,494] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,510] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,527] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,543] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,560] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,576] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:18,594] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8756 [2025-05-08 18:58:18,594] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:18,603] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8757 tokens and then stores 0 tokens [2025-05-08 18:58:18,622] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:19 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:19 engine.py:275] Added request chatcmpl-cbb7a6c71e5d4f56ac40d99fb8974908.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,295] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,311] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,328] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,344] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,360] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,377] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,393] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,410] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,426] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8606 [2025-05-08 18:58:19,427] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:19,435] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8607 tokens and then stores 0 tokens [2025-05-08 18:58:19,454] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:19 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:19 engine.py:275] Added request chatcmpl-bf1e1c0e772c4b2880297efbeab653fc.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,963] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,980] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:19,996] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:20,012] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:20,029] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:20,045] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:20,061] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:20,078] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:20,096] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9053 [2025-05-08 18:58:20,096] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:20,105] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9054 tokens and then stores 0 tokens [2025-05-08 18:58:20,124] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:20 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:20 engine.py:275] Added request chatcmpl-763cafdf33f44ca3a43f0de17fd36b52.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:20,486] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:20,486] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 9246 tokens [2025-05-08 18:58:21,438] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:21 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:22 engine.py:275] Added request chatcmpl-9181a8d6a4b44685a8c3349669c1a7af.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,076] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,093] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,110] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,126] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,142] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,159] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,175] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,192] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,210] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9053 [2025-05-08 18:58:22,210] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:22,219] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9054 tokens and then stores 0 tokens [2025-05-08 18:58:22,238] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:22 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:22 engine.py:275] Added request chatcmpl-fafd2a781a5a470f937d6dee30500907.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,618] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,635] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,651] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,667] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,684] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,700] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,716] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,733] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,749] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:22,765] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9414 [2025-05-08 18:58:22,766] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:22,775] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9415 tokens and then stores 0 tokens [2025-05-08 18:58:22,794] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:23 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:23 engine.py:275] Added request chatcmpl-5600744ec43c4515b720d1179a596c2b.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,533] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,549] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,566] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,582] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,598] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,615] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,631] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,648] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,664] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:23,680] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9414 [2025-05-08 18:58:23,681] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:23,690] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9415 tokens and then stores 0 tokens [2025-05-08 18:58:23,709] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:24 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:24 engine.py:275] Added request chatcmpl-5dfcd7ab8ed64130b363aeb0f7ebaa3a.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,442] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,458] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,475] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,491] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,508] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,524] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,540] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,557] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:24,573] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8606 [2025-05-08 18:58:24,574] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:24,582] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8607 tokens and then stores 0 tokens [2025-05-08 18:58:24,601] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:25 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:25 engine.py:275] Added request chatcmpl-5ae4e7d3b81b40f4887016d7fd131608.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,109] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,125] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,141] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,157] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,174] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,190] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,206] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,223] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,239] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,255] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9357 [2025-05-08 18:58:25,256] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:25,265] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9358 tokens and then stores 0 tokens [2025-05-08 18:58:25,284] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:25 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:25 engine.py:275] Added request chatcmpl-a22e778e1ed249f6a42914121653c898.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,975] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:25,992] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,008] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,024] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,041] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,057] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,073] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,089] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,106] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8433 [2025-05-08 18:58:26,106] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:26,115] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8434 tokens and then stores 0 tokens [2025-05-08 18:58:26,133] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:26 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:26 engine.py:275] Added request chatcmpl-0d2fb1ad07734a3fbd8b3e48e18720df.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,968] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:26,984] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,001] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,017] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,033] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,050] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,066] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,082] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,099] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8511 [2025-05-08 18:58:27,099] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:27,107] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8512 tokens and then stores 0 tokens [2025-05-08 18:58:27,126] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:27 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:27 engine.py:275] Added request chatcmpl-204e405e9ae6426dac5e1bc406c74ab8.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,387] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,404] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,420] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,437] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,453] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,469] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,486] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,502] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,519] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8549 [2025-05-08 18:58:27,519] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:27,527] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8550 tokens and then stores 0 tokens [2025-05-08 18:58:27,546] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:27 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:27 engine.py:275] Added request chatcmpl-5e649eaa6407404781fa87675e480775.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,939] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,956] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,972] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:27,988] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,005] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,021] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,037] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,054] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,070] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8511 [2025-05-08 18:58:28,071] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:28,079] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8512 tokens and then stores 0 tokens [2025-05-08 18:58:28,098] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:28 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:28 engine.py:275] Added request chatcmpl-6534659f1bdc439690bdfcc12d02efb8.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,356] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,373] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,389] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,405] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,422] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,438] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,454] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,470] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,487] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8511 [2025-05-08 18:58:28,487] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:28,496] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8512 tokens and then stores 0 tokens [2025-05-08 18:58:28,514] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:28 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:28 engine.py:275] Added request chatcmpl-f0cd6e02e9c04bfc8c534f55a34c9262.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,776] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,793] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,809] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,825] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,842] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,858] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,874] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,891] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,907] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:28,924] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9666 [2025-05-08 18:58:28,924] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:28,934] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9667 tokens and then stores 0 tokens [2025-05-08 18:58:28,953] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:29 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:29 engine.py:275] Added request chatcmpl-5d00420868354d36bf583ee9244d5cff.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,574] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,591] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,607] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,623] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,640] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,656] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,672] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,689] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,705] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:29,721] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9536 [2025-05-08 18:58:29,722] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:29,731] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9537 tokens and then stores 0 tokens [2025-05-08 18:58:29,750] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:31 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:31 engine.py:275] Added request chatcmpl-04c7bb9251754d4e81eeee4fbea09c42.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,395] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,412] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,428] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,445] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,461] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,478] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,494] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,511] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,527] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8549 [2025-05-08 18:58:31,528] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:31,536] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8550 tokens and then stores 0 tokens [2025-05-08 18:58:31,557] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:31 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:31 engine.py:275] Added request chatcmpl-674a3c963a594606993fbe3f401901ca.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,953] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,970] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:31,986] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,002] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,018] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,035] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,051] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,067] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,084] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,085] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9245 [2025-05-08 18:58:32,086] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:32,095] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9246 tokens and then stores 0 tokens [2025-05-08 18:58:32,113] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:32 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:32 engine.py:275] Added request chatcmpl-e17afbcf6742431eb87a228421a0530e.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,358] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,374] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,391] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,407] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,423] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,440] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,456] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,472] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:32,490] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8756 [2025-05-08 18:58:32,490] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:32,499] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8757 tokens and then stores 0 tokens [2025-05-08 18:58:32,517] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:33 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:33 engine.py:275] Added request chatcmpl-7c9ca6dfee6b461c8e5871a50f7a701e.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,190] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,206] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,223] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,239] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,255] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,272] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,288] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,304] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,321] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:33,337] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9349 [2025-05-08 18:58:33,337] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:33,346] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9350 tokens and then stores 0 tokens [2025-05-08 18:58:33,365] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:33 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:33 engine.py:275] Added request chatcmpl-54f16995bc0049c9b1eff2fe1a7dc535.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:33,758] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:33,758] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8314 tokens [2025-05-08 18:58:34,603] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:35 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:36 engine.py:275] Added request chatcmpl-12ccd365c4c24c9997fddbc25f51baa1.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,031] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,048] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,064] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,081] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,097] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,113] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,130] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,146] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,163] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8756 [2025-05-08 18:58:36,164] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:36,173] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8757 tokens and then stores 0 tokens [2025-05-08 18:58:36,192] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:36 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:36 engine.py:275] Added request chatcmpl-9276346286474bf9a435d2455b905a38.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,862] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,879] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,895] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,911] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,927] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,944] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,960] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,976] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:36,992] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,009] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9357 [2025-05-08 18:58:37,009] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:37,018] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9358 tokens and then stores 0 tokens [2025-05-08 18:58:37,037] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:37 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:37 engine.py:275] Added request chatcmpl-5924af2d7e8943a39c63f78faf28e5b3.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,727] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,743] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,761] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,777] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,794] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,810] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,826] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,843] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,859] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:37,875] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9357 [2025-05-08 18:58:37,876] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:37,885] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9358 tokens and then stores 0 tokens [2025-05-08 18:58:37,904] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:38 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:38 engine.py:275] Added request chatcmpl-9513b1e9dfaa46f79b9f0887e68b08c7.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,596] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,613] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,629] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,646] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,662] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,678] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,695] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,711] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:38,713] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8214 [2025-05-08 18:58:38,713] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:38,722] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8215 tokens and then stores 0 tokens [2025-05-08 18:58:38,741] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:39 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:39 engine.py:275] Added request chatcmpl-0fce5f0f7cac4b8ba73f4277dcb373be.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,268] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,285] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,301] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,318] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,334] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,350] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,366] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,383] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:39,400] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8756 [2025-05-08 18:58:39,400] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:39,409] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8757 tokens and then stores 0 tokens [2025-05-08 18:58:39,428] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:40 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:40 engine.py:275] Added request chatcmpl-4733a1bfab944f9784510600142a7e88.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,100] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,117] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,133] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,149] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,166] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,182] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,198] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,215] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,231] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,248] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9666 [2025-05-08 18:58:40,248] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:40,257] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9667 tokens and then stores 0 tokens [2025-05-08 18:58:40,276] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:40 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:40 engine.py:275] Added request chatcmpl-02b0a96a5abe426c90168d00878bdd47.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,897] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,914] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,930] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,946] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,964] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,980] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:40,996] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,012] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,030] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9053 [2025-05-08 18:58:41,031] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:41,040] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9054 tokens and then stores 0 tokens [2025-05-08 18:58:41,060] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:41 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:41 engine.py:275] Added request chatcmpl-f7e4a01bb9e94ae5bd63008bae667b73.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,437] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,453] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,469] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,486] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,502] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,518] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,535] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,551] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,567] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:41,584] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9666 [2025-05-08 18:58:41,584] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:41,594] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9667 tokens and then stores 0 tokens [2025-05-08 18:58:41,613] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:42 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:42 engine.py:275] Added request chatcmpl-a2f7e9ad7cc046b4980bf418a6e2f708.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,232] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,249] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,265] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,281] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,297] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,314] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,330] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,346] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:42,362] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 8501 [2025-05-08 18:58:42,363] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:42,371] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 8502 tokens and then stores 0 tokens [2025-05-08 18:58:42,390] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:43 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:43 engine.py:275] Added request chatcmpl-ef5ea84b08214a13bf5ee25f678e013b.
+[33mDEBUG LMCache: [0mInjected token number: 0 [2025-05-08 18:58:43,073] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mReturning the original input! [2025-05-08 18:58:43,073] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:772
+[33mDEBUG LMCache: [0mStore skips 0 tokens and then stores 8267 tokens [2025-05-08 18:58:43,917] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:44 llm_engine.py:1143] Start updating memory
+INFO:     127.0.0.1:50822 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO 05-08 18:58:44 engine.py:275] Added request chatcmpl-e96f5be089884eea830a4f8555ddbc03.
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,651] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,668] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,684] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,700] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,716] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,733] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,749] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,765] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,782] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mINFO LMCache: [0mDecompressed memory object from hot cache, rate: 0.728571429.
+ [2025-05-08 18:58:44,798] -- /home/ubuntu/cache_serve/LMCache/lmcache/experimental/storage_backend/storage_manager.py:574
+[33mDEBUG LMCache: [0mInjected token number: 9536 [2025-05-08 18:58:44,798] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:741
+[33mDEBUG LMCache: [0mRebuilt the input! [2025-05-08 18:58:44,808] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:769
+[33mDEBUG LMCache: [0mStore skips 9537 tokens and then stores 0 tokens [2025-05-08 18:58:44,827] -- /home/ubuntu/cache_serve/LMCache/lmcache/integration/vllm/vllm_adapter.py:565
+INFO 05-08 18:58:46 llm_engine.py:1143] Start updating memory
