@@ -16,16 +16,15 @@ args = parser.parse_args()
 
 # List of file paths for baseline, ours, and prefill
 file_paths = [
-    'results/May_7/baseline/02_processed.csv',
-    'results/May_7/baseline/03_processed.csv',
-    'results/May_7/baseline/06_processed.csv'
+    'results/May_8/fig3/fig3_samsum_6000_processed.csv',
+    'results/May_8/fig3/fig3_samsum_9000_processed.csv',
+    'results/May_8/fig3/fig3_samsum_12000_processed.csv'
 ]
 
 file_paths_ours = [
-    'results/May_7/ours/01_processed.csv',
-    'results/May_7/ours/04_processed.csv',
-    'results/May_7/ours/07_processed.csv',
-    'results/May_7/ours/1_processed.csv',
+    'results/May_8/fig3/fig3_samsum_6000_processed.csv',
+    'results/May_8/fig3/fig3_samsum_9000_processed.csv',
+    'results/May_8/fig3/fig3_samsum_12000_processed.csv'
 ]
 
 file_path_prefill = [
