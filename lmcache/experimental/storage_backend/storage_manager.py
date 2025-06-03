@@ -367,6 +367,12 @@ class StorageManager:
             self.put(self.update_queue, current_kv_decision, update_decision)
             self.update_queue.clear()
 
+        for key in self.to_delete_list:
+            for backend_name, backend in self.storage_backends.items():
+                backend.remove(key)
+                # I ignored evictor's size since I set disk memory to a large number.
+        self.to_delete_list = []
+
     def put(
         self,
         to_save_list: OrderedDict[CacheEngineKey, MemoryObj],
@@ -676,6 +682,11 @@ class StorageManager:
                     memory_obj = self.kivi_de.deserialize(memory_obj, BITS, self.kivi_cache[new_key][0], self.kivi_cache[new_key][1], self.kivi_cache[new_key][2], self.kivi_cache[new_key][3], self.kivi_cache[new_key][4])       
 
                 logger.info(f"Decompressed memory object from disk, rate: {new_key.metadata.rate}.\n")
+
+                # Hack the system
+                # Remove memory_obj from disk if it is in its last round 
+                if occurence_number == 3:
+                    self.to_delete_list.append(new_key)
 
                 return memory_obj
 
