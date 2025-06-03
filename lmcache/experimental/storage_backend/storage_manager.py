@@ -297,7 +297,7 @@ class StorageManager:
         self.manager = KVCacheManager(self.hot_cache, config.policy, config.rate)
         self.policy = config.policy
         self.update_queue: OrderedDict[CacheEngineKey, MemoryObj] = OrderedDict()
-        self.to_delete_list: List[CacheEngineKey] = []
+        self.to_delete_list: Dict[CacheEngineKey, int] = {}
 
     def allocate(
         self,
@@ -356,16 +356,16 @@ class StorageManager:
         """
         Update the hot cache and storage backends.
         """
+        for key, size in self.to_delete_list.items():
+            for backend_name, backend in self.storage_backends.items():
+                backend.remove(key)
+                backend.evictor.current_cache_size -= size
+        self.to_delete_list.clear()
+
         if self.update_queue:
             current_kv_decision, update_decision = self.manager.inform_new(self.update_queue)
             self.put(self.update_queue, current_kv_decision, update_decision)
             self.update_queue.clear()
-
-        for key in self.to_delete_list:
-            for backend_name, backend in self.storage_backends.items():
-                backend.remove(key)
-                # I ignored evictor's size since I set disk memory to a large number.
-        self.to_delete_list = []
 
     def put(
         self,
@@ -660,6 +660,7 @@ class StorageManager:
                 if self.policy == "baseline_KIVI":
                     self.put_in_queue(new_key, memory_obj)
                     self.memory_allocator.ref_count_up(memory_obj)
+                    self.to_delete_list[new_key] = memory_obj.get_physical_size()
 
                 # De-compress memory_obj
                 if new_key.metadata.method[0] == "kivi" and new_key.metadata.rate != 1:  
@@ -675,11 +676,6 @@ class StorageManager:
                     memory_obj = self.kivi_de.deserialize(memory_obj, BITS, self.kivi_cache[new_key][0], self.kivi_cache[new_key][1], self.kivi_cache[new_key][2], self.kivi_cache[new_key][3], self.kivi_cache[new_key][4])       
 
                 logger.info(f"Decompressed memory object from disk, rate: {new_key.metadata.rate}.\n")
-
-                # Hack the system
-                # Remove memory_obj from disk if it is in its last round 
-                if occurence_number == 3:
-                    self.to_delete_list.append(new_key)
 
                 return memory_obj
 
