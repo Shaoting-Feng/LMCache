@@ -295,7 +295,7 @@ class LocalDiskBackend(StorageBackendInterface):
             # f.close()
 
             ##### 3
-            TARGET_RATE = 1000 * 1024**2  # 1 GiB/s
+            TARGET_RATE = 4 * 1000 * 1024**2  # 1 GiB/s
 
             fd = os.open(path, os.O_RDONLY | os.O_DIRECT)
             f  = os.fdopen(fd, 'rb', buffering=0)
@@ -310,6 +310,7 @@ class LocalDiskBackend(StorageBackendInterface):
                 to_sleep = expected - elapsed
                 if to_sleep > 0:
                     time.sleep(to_sleep)
+                    logger.info(f"I slept for {to_sleep}.")
             f.close()
 
             return memory_obj

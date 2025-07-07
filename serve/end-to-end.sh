@@ -16,24 +16,24 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # --- Configuration arrays (must all be the same length) ---
-ports=(8000 8001 8002 8003)
+ports=(8000 8001)
 configs=(
-  ../config/Jun_19_1_coding/ours/01.yaml
-  ../config/Jun_19_1_coding/ours/05.yaml
-  ../config/Jun_19_1_coding/ours/1.yaml
-  ../config/Jun_19_1_coding/ours/10.yaml
+  # ../config/Jul_3_sum_storage_varieties/4/01.yaml
+  # ../config/Jul_3_sum_storage_varieties/4/05.yaml
+  ../config/Jul_3_sum_storage_varieties/4/1.yaml
+  ../config/Jul_3_sum_storage_varieties/4/10.yaml
 )
 logs=(
-  results/Jun_19_1_coding/ours/tokens/01.log
-  results/Jun_19_1_coding/ours/tokens/05.log
-  results/Jun_19_1_coding/ours/tokens/1.log
-  results/Jun_19_1_coding/ours/tokens/10.log
+  # results/Jul_3_sum_storage_varieties/4/tokens/01.log
+  # results/Jul_3_sum_storage_varieties/4/tokens/05.log
+  results/Jul_3_sum_storage_varieties/4/tokens/1.log
+  results/Jul_3_sum_storage_varieties/4/tokens/10.log
 )
 outputs=(
-  results/Jun_19_1_coding/ours/01.csv
-  results/Jun_19_1_coding/ours/05.csv
-  results/Jun_19_1_coding/ours/1.csv
-  results/Jun_19_1_coding/ours/10.csv
+  # results/Jul_3_sum_storage_varieties/4/01.csv
+  # results/Jul_3_sum_storage_varieties/4/05.csv
+  results/Jul_3_sum_storage_varieties/4/1.csv
+  results/Jul_3_sum_storage_varieties/4/10.csv
 )
 
 # Array to track running PGIDs
@@ -70,7 +70,7 @@ for i in "${!ports[@]}"; do
 
   # Run the test
   echo "Running test: python3 online_test.py --output $out --port $port"
-  python3 coding.py --output "$out" --port "$port" >>"$logf" 2>&1
+  python3 sum.py --output "$out" --port "$port" >>"$logf" 2>&1
 
   # Tear down this engine session
   echo "Test finished; tearing down engine session PGID $engine_pid"

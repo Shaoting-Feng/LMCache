@@ -33,9 +33,10 @@ else:
 
 # File lists
 file_paths_kivi = [
-    'results/Jun_19_1_coding/baseline_kivi/02_processed.csv',
-    'results/Jun_19_1_coding/baseline_kivi/03_processed.csv',
-    'results/Jun_19_1_coding/baseline_kivi/06_processed.csv',
+    # 'results/Jul_3_sum_storage_varieties/05/01_processed_updated.csv',
+    # 'results/Jul_3_sum_storage_varieties/05/05_processed_updated.csv',
+    # 'results/Jul_3_sum_storage_varieties/05/1_processed_updated.csv',
+    # 'results/Jul_3_sum_storage_varieties/05/10_processed_updated.csv',
 ]
 file_paths_ours = [
     'results/Jun_19_1_coding/ours/01_processed_updated.csv',
@@ -44,15 +45,19 @@ file_paths_ours = [
     'results/Jun_19_1_coding/ours/10_processed_updated.csv',
 ]
 file_paths_prefill = [
-    'results/Jun_19_1_coding/prefill/0_processed.csv'
+    # 'results/Jul_3_sum_storage_varieties/4/01_processed_updated.csv',
+    # # 'results/Jul_3_sum_storage_varieties/4/05_processed_updated.csv',
+    # 'results/Jul_3_sum_storage_varieties/4/1_processed_updated.csv',
+    # 'results/Jul_3_sum_storage_varieties/4/10_processed_updated.csv',
 ]
 file_paths_streaming = [
-    'results/Jun_19_1_coding/baseline_streaming/02_processed.csv',
-    'results/Jun_19_1_coding/baseline_streaming/03_processed.csv',
-    'results/Jun_19_1_coding/baseline_streaming/06_processed.csv',
+    'results/Jul_3_sum_storage_varieties/4/01_processed_updated.csv',
+    # 'results/Jul_3_sum_storage_varieties/4/05_processed_updated.csv',
+    'results/Jul_3_sum_storage_varieties/4/1_processed_updated.csv',
+    'results/Jul_3_sum_storage_varieties/4/10_processed_updated.csv',
 ]
 file_paths_offload = [
-    'results/Jun_19_1_coding/prefill/1_processed.csv'
+    # 'results/Jun_19_1_coding/prefill/1_processed.csv'
 ]
 
 def load_metrics(file_list, filter_first=False):
@@ -104,7 +109,7 @@ if file_paths_ours:
         marker='^',
         markersize=10,
         linewidth=5,
-        label='Ours'
+        label='1GB/s SSD'
     )
 
 # Prefill
@@ -126,7 +131,7 @@ if file_paths_streaming:
         marker='s',
         markersize=10,
         linewidth=5,
-        label='StreamingLLM LRU'
+        label='4GB/s SSD'
     )
 
 # Category 5 (Offload)
@@ -183,7 +188,7 @@ if file_paths_ours:
         marker='^',
         markersize=10,
         linewidth=5,
-        label='Ours'
+        label='1GB/s SSD'
     )
 
 # Prefill
@@ -205,7 +210,7 @@ if file_paths_streaming:
         marker='s',
         markersize=10,
         linewidth=5,
-        label='StreamingLLM LRU'
+        label='4GB/s SSD'
     )
 
 # Category 5 (Offload)
