@@ -39,10 +39,10 @@ file_paths_kivi = [
     # 'results/Jul_3_sum_storage_varieties/05/10_processed_updated.csv',
 ]
 file_paths_ours = [
-    'results/Jun_19_1_coding/ours/01_processed_updated.csv',
-    'results/Jun_19_1_coding/ours/05_processed_updated.csv',
-    'results/Jun_19_1_coding/ours/1_processed_updated.csv',
-    'results/Jun_19_1_coding/ours/10_processed_updated.csv',
+    'results/Jul_16_sum_predict_speed/4/01_processed_updated.csv',
+    'results/Jul_16_sum_predict_speed/4/05_processed_updated.csv',
+    # 'results/Jul_16_sum_predict_speed/4/1_processed_updated.csv',
+    'results/Jul_16_sum_predict_speed/4/10_processed_updated.csv',
 ]
 file_paths_prefill = [
     # 'results/Jul_3_sum_storage_varieties/4/01_processed_updated.csv',
@@ -109,7 +109,7 @@ if file_paths_ours:
         marker='^',
         markersize=10,
         linewidth=5,
-        label='1GB/s SSD'
+        label='With incorrect prediction of SSD speed'
     )
 
 # Prefill
@@ -131,7 +131,7 @@ if file_paths_streaming:
         marker='s',
         markersize=10,
         linewidth=5,
-        label='4GB/s SSD'
+        label='With correct prediction of SSD speed'
     )
 
 # Category 5 (Offload)
@@ -151,7 +151,7 @@ plt.title(plot_title, fontsize=16)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.grid(True)
-plt.legend(fontsize=14)
+plt.legend(fontsize=14, loc='upper center', bbox_to_anchor=(0.5, 1.2), ncol=2)
 plt.xlim(xmin=0)
 # plt.ylim(ymax=1)
 
@@ -188,7 +188,7 @@ if file_paths_ours:
         marker='^',
         markersize=10,
         linewidth=5,
-        label='1GB/s SSD'
+        label='With incorrect prediction of SSD speed'
     )
 
 # Prefill
@@ -210,7 +210,7 @@ if file_paths_streaming:
         marker='s',
         markersize=10,
         linewidth=5,
-        label='4GB/s SSD'
+        label='With correct prediction of SSD speed'
     )
 
 # Category 5 (Offload)
@@ -230,7 +230,7 @@ plt.title(plot_title, fontsize=16)
 plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.grid(True)
-plt.legend(fontsize=14)
+plt.legend(fontsize=14, loc='upper center', bbox_to_anchor=(0.5, 1.2), ncol=2)
 plt.xlim(xmin=0)
 # plt.ylim(ymax=1)
 

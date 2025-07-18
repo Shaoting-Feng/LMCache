@@ -16,24 +16,24 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # --- Configuration arrays (must all be the same length) ---
-ports=(8000 8001)
+ports=(8000 8001 8002 8003)
 configs=(
-  # ../config/Jul_3_sum_storage_varieties/4/01.yaml
-  # ../config/Jul_3_sum_storage_varieties/4/05.yaml
-  ../config/Jul_3_sum_storage_varieties/4/1.yaml
-  ../config/Jul_3_sum_storage_varieties/4/10.yaml
+  ../config/Jul_16_sum_predict_speed/4/01.yaml
+  ../config/Jul_16_sum_predict_speed/4/05.yaml
+  ../config/Jul_16_sum_predict_speed/4/1.yaml
+  ../config/Jul_16_sum_predict_speed/4/10.yaml
 )
 logs=(
-  # results/Jul_3_sum_storage_varieties/4/tokens/01.log
-  # results/Jul_3_sum_storage_varieties/4/tokens/05.log
-  results/Jul_3_sum_storage_varieties/4/tokens/1.log
-  results/Jul_3_sum_storage_varieties/4/tokens/10.log
+  results/Jul_16_sum_predict_speed/4/tokens/01.log
+  results/Jul_16_sum_predict_speed/4/tokens/05.log
+  results/Jul_16_sum_predict_speed/4/tokens/1.log
+  results/Jul_16_sum_predict_speed/4/tokens/10.log
 )
 outputs=(
-  # results/Jul_3_sum_storage_varieties/4/01.csv
-  # results/Jul_3_sum_storage_varieties/4/05.csv
-  results/Jul_3_sum_storage_varieties/4/1.csv
-  results/Jul_3_sum_storage_varieties/4/10.csv
+  results/Jul_16_sum_predict_speed/4/01.csv
+  results/Jul_16_sum_predict_speed/4/05.csv
+  results/Jul_16_sum_predict_speed/4/1.csv
+  results/Jul_16_sum_predict_speed/4/10.csv
 )
 
 # Array to track running PGIDs
