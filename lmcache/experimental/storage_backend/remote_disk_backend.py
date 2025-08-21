@@ -8,6 +8,7 @@ import time
 import aiofiles
 import torch
 
+from lmcache.config import LMCacheEngineMetadata
 from lmcache.experimental.config import LMCacheEngineConfig
 from lmcache.experimental.memory_management import (MemoryAllocatorInterface, MemoryObj, MemoryFormat, BytesBufferMemoryObj)
 from lmcache.experimental.storage_backend.abstract_backend import \
@@ -16,6 +17,7 @@ from lmcache.experimental.storage_backend.evictor import LRUEvictor, PutStatus
 from lmcache.logging import init_logger
 from lmcache.utils import (CacheEngineKey, DiskCacheMetadata,
                            _lmcache_nvtx_annotate)
+from lmcache.experimental.storage_backend.naive_serde import CreateSerde
 
 logger = init_logger(__name__)
 
@@ -24,6 +26,7 @@ class RemoteDiskBackend(StorageBackendInterface):
 
     def __init__(self,
                  config: LMCacheEngineConfig,
+                 metadata: LMCacheEngineMetadata,
                  loop: asyncio.AbstractEventLoop,
                  memory_allocator: MemoryAllocatorInterface,
                  dst_device: str = "cuda"):
@@ -46,6 +49,10 @@ class RemoteDiskBackend(StorageBackendInterface):
 
         self.memory_allocator = memory_allocator
         self.policy = config.policy
+
+        self.serializer, self.deserializer = CreateSerde(
+            "cachegen", metadata, config
+        )
 
     def __str__(self):
         return self.__class__.__name__
@@ -105,14 +112,15 @@ class RemoteDiskBackend(StorageBackendInterface):
         for evict_key in evict_keys:
             self.remove(evict_key)
 
-        self.memory_allocator.ref_count_up(memory_obj)
-
         self.disk_lock.acquire()
         self.put_tasks.append(key)
         self.disk_lock.release()
 
+        compressed_memory_obj = self.serializer.serialize(memory_obj)
+        self.memory_allocator.ref_count_up(compressed_memory_obj)
+
         future = asyncio.run_coroutine_threadsafe(
-            self.async_save_bytes_to_disk(key, memory_obj), self.loop)
+            self.async_save_bytes_to_disk(key, compressed_memory_obj), self.loop)
         return future
 
     def submit_prefetch_task(
@@ -170,12 +178,13 @@ class RemoteDiskBackend(StorageBackendInterface):
         path = self.dict[old_key].path
         dtype = self.dict[old_key].dtype
         shape = self.dict[old_key].shape
-        assert dtype is not None
         assert shape is not None
         memory_obj = self.load_bytes_from_disk(path, dtype=dtype, shape=shape)
+        decompressed_memory_obj = self.deserializer.deserialize(memory_obj)
+        self.memory_allocator.ref_count_down(memory_obj)
 
         self.disk_lock.release()
-        return memory_obj, old_key
+        return decompressed_memory_obj, old_key
 
     @_lmcache_nvtx_annotate
     @torch.inference_mode()
@@ -227,7 +236,7 @@ class RemoteDiskBackend(StorageBackendInterface):
             await f.readinto(buffer)
         return memory_obj
 
-    # TODO(Jiayi): use memory allocator to redeuce cpu buffer allocation
+    # TODO(Jiayi): use memory allocator to reduce cpu buffer allocation
     # TODO(Jiayi): the pinned cpu memory_obj should directly be passed into
     # gpu connector; this gpu buffer could be avoided
     def load_bytes_from_disk(
@@ -240,15 +249,14 @@ class RemoteDiskBackend(StorageBackendInterface):
         Load bytearray from disk.
         """
         if dtype == torch.int8:
-
-            # file_size = os.path.getsize(path)
-            # buffer = bytearray(file_size)
-            # with open(path, 'rb') as f:
-            #     f.readinto(buffer)
-            # memory_obj = BytesBufferMemoryObj(buffer)
-            # return memory_obj
-
             return path
+        elif dtype == None:
+            file_size = os.path.getsize(path)
+            buffer = bytearray(file_size)
+            with open(path, 'rb') as f:
+                f.readinto(buffer)
+            memory_obj = BytesBufferMemoryObj(buffer)
+            return memory_obj
         else:
             memory_obj = self.memory_allocator.allocate(shape, dtype, MemoryFormat.KV_BLOB2)
             if memory_obj is None:
