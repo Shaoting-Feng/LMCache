@@ -4,7 +4,7 @@ from collections import OrderedDict, defaultdict
 from concurrent.futures import Future
 from typing import Dict, List, Optional, Tuple, Union
 from torch import Tensor
-
+import copy
 import torch
 
 from lmcache.config import LMCacheEngineMetadata
@@ -365,7 +365,6 @@ class StorageManager:
         Put the memory object into the queue.
         """
         self.update_queue[key] = memory_obj
-        self.storage_backends["RemoteDiskBackend"].submit_put_task(key, memory_obj)
 
     def update(self) -> None:  
         """
@@ -396,7 +395,6 @@ class StorageManager:
 
         self.manager_lock.acquire()
         
-        # TODO(Shaoting): update_decision should be in a separate thread: thread 1, decode; thread 2, update and store
         for update_key in update_decision:
             update_memory_obj = self.hot_cache.pop(update_key)
             ud = update_decision[update_key]
@@ -435,16 +433,7 @@ class StorageManager:
                     self.kivi_cache[update_key] = (metadata, entry_offsets, split_metadata, quant_metadata, quant_entry_offsets)      
 
             if update_device == "cpu":
-                # Move memory obj from tmp buffer to real location
-                self.manager_lock.release()
-                compressed_blank_memory_obj = self.allocate(
-                    update_memory_obj.get_shape(),
-                    update_memory_obj.get_dtype())
-                self.manager_lock.acquire()
-                # NOTE(Shaoting): Extra memory copy here
-                compressed_blank_memory_obj.tensor.copy_(update_memory_obj.tensor)
-                self.memory_allocator.ref_count_down(update_memory_obj)
-                update_memory_obj = compressed_blank_memory_obj 
+                update_memory_obj.metadata.fmt = MemoryFormat.KV_BLOB
                 self.hot_cache[update_key] = update_memory_obj
             
             elif update_device == "disk":
@@ -461,6 +450,11 @@ class StorageManager:
                 pass
             
             elif current_kv_decision.compression_method == "kivi" and current_kv_decision.compression_rate != 1 and current_kv_decision.compression_rate != 0 and current_kv_decision.compression_rate != key.metadata.rate:
+
+                # Offload to slow device before first compression
+                if key.metadata.rate == 1:
+                    key_copy = copy.deepcopy(key)
+                    self.storage_backends["RemoteDiskBackend"].submit_put_task(key_copy, memory_obj)
 
                 # KIVI mapping defined here
                 if current_kv_decision.compression_rate == 0.728571429:
@@ -484,17 +478,7 @@ class StorageManager:
                 pass
 
             if self.use_hot and current_kv_decision.device == "cpu" and current_kv_decision.compression_rate != 0:
-                # Move memory obj from tmp buffer to real location
-                self.manager_lock.release()
-                blank_memory_obj = self.allocate(
-                    memory_obj.get_shape(),
-                    memory_obj.get_dtype())
-                self.manager_lock.acquire()
-                # NOTE(Shaoting): Extra memory copy here
-                blank_memory_obj.tensor.copy_(memory_obj.tensor)
-                self.memory_allocator.ref_count_down(memory_obj)
-                memory_obj = blank_memory_obj 
-
+                memory_obj.metadata.fmt = MemoryFormat.KV_BLOB
                 self.hot_cache[key] = memory_obj
                 self.memory_allocator.ref_count_up(memory_obj)
 
@@ -558,17 +542,7 @@ class StorageManager:
             self.manager_lock.acquire()
             if self.use_hot and key not in self.hot_cache:
     
-                # Move memory obj from tmp buffer to real location
-                self.manager_lock.release()
-                blank_memory_obj = self.allocate(
-                    memory_obj.get_shape(),
-                    memory_obj.get_dtype())
-                self.manager_lock.acquire()
-                blank_memory_obj.raw_data.copy_(memory_obj.raw_data, non_blocking=True)
-                blank_memory_obj.valid = memory_obj.valid
-                self.memory_allocator.ref_count_down(memory_obj)
-                memory_obj = blank_memory_obj
-
+                memory_obj.metadata.fmt = MemoryFormat.KV_BLOB
                 self.hot_cache[key] = memory_obj
                 self.memory_allocator.ref_count_up(memory_obj)
             self.manager_lock.release()
@@ -641,35 +615,31 @@ class StorageManager:
 
         self.manager_lock.release()
 
+        memory_obj, new_key = self.storage_backends["LocalDiskBackend"].get_blocking(key, emerge_id)
+        
+        if memory_obj is not None:
 
-        # Search all backends for blocking get
-        for backend_name, backend in self.storage_backends.items():
+            # In memory update (from local disk to cpu)
+            self.put_in_queue(new_key, memory_obj)
+            self.memory_allocator.ref_count_up(memory_obj)
+            self.to_delete_list[new_key] = memory_obj.get_physical_size()
 
-            memory_obj, new_key = backend.get_blocking(key, emerge_id)
-            
-            if memory_obj is not None:
+            # De-compress memory_obj
+            if new_key.metadata.method[0] == "kivi" and new_key.metadata.rate != 1:  
 
-                # In memory update (from disk to cpu)
-                self.put_in_queue(new_key, memory_obj)
-                self.memory_allocator.ref_count_up(memory_obj)
-                self.to_delete_list[new_key] = memory_obj.get_physical_size()
+                # KIVI mapping defined here
+                if new_key.metadata.rate == 0.728571429:
+                    BITS = 8
+                elif new_key.metadata.rate == 0.485714286:
+                    BITS = 4
+                elif new_key.metadata.rate == 0.371428571:
+                    BITS = 2
 
-                # De-compress memory_obj
-                if new_key.metadata.method[0] == "kivi" and new_key.metadata.rate != 1:  
+                memory_obj = self.kivi_de.deserialize(memory_obj, BITS, self.kivi_cache[new_key][0], self.kivi_cache[new_key][1], self.kivi_cache[new_key][2], self.kivi_cache[new_key][3], self.kivi_cache[new_key][4])       
 
-                    # KIVI mapping defined here
-                    if new_key.metadata.rate == 0.728571429:
-                        BITS = 8
-                    elif new_key.metadata.rate == 0.485714286:
-                        BITS = 4
-                    elif new_key.metadata.rate == 0.371428571:
-                        BITS = 2
+            logger.info(f"Decompressed memory object from disk, rate: {new_key.metadata.rate}.\n")
 
-                    memory_obj = self.kivi_de.deserialize(memory_obj, BITS, self.kivi_cache[new_key][0], self.kivi_cache[new_key][1], self.kivi_cache[new_key][2], self.kivi_cache[new_key][3], self.kivi_cache[new_key][4])       
-
-                logger.info(f"Decompressed memory object from disk, rate: {new_key.metadata.rate}.\n")
-
-                return memory_obj
+            return memory_obj
 
         return None
 
