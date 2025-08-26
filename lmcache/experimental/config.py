@@ -35,6 +35,7 @@ class LMCacheEngineConfig:
     compression: str
     dataset_csv: str
     method_output_csv: str
+    sliding_window_size: int  # in seconds, for frequency score calculation
 
     @staticmethod
     def from_defaults(
@@ -57,12 +58,13 @@ class LMCacheEngineConfig:
         compression: str = "kivi",
         dataset_csv: str = "blablabla",
         method_output_csv: str = "blablabla",
+        sliding_window_size: int = 300,
     ) -> "LMCacheEngineConfig":
         return LMCacheEngineConfig(chunk_size, local_cpu, max_local_cpu_size,
                                    local_disk, max_local_disk_size, remote_disk, max_remote_disk_size, remote_url,
                                    remote_serde, save_decode_cache,
                                    enable_blending, blend_recompute_ratio,
-                                   blend_min_tokens, alpha, policy, rate, compression, dataset_csv, method_output_csv)
+                                   blend_min_tokens, alpha, policy, rate, compression, dataset_csv, method_output_csv, sliding_window_size)
 
     @staticmethod
     def from_file(file_path: str) -> "LMCacheEngineConfig":
@@ -97,6 +99,7 @@ class LMCacheEngineConfig:
         compression = config.get("compression", "kivi")
         dataset_csv = config.get("dataset_csv", "blablabla")
         method_output_csv = config.get("method_output_csv", "blablabla")
+        sliding_window_size = config.get("sliding_window_size", 300)
 
         match local_disk:
             case None:
@@ -140,6 +143,7 @@ class LMCacheEngineConfig:
             compression,
             dataset_csv,
             method_output_csv,
+            sliding_window_size
         )
 
     @staticmethod
@@ -219,6 +223,7 @@ class LMCacheEngineConfig:
                                        config.dataset_csv)
         config.method_output_csv = parse_env(get_env_name("method_output_csv"),
                                               config.method_output_csv)
+        config.sliding_window_size = to_int(parse_env(get_env_name("sliding_window_size"), config.sliding_window_size))
         return config
 
     def to_original_config(self) -> orig_config.LMCacheEngineConfig:

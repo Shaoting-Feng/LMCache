@@ -149,7 +149,7 @@ class RemoteDiskBackend(StorageBackendInterface):
 
     def get_blocking(
         self,
-        key: CacheEngineKey, emerge_id
+        key: CacheEngineKey
     ) -> Tuple[Union[MemoryObj, str], CacheEngineKey]:
         """
         Blocking get function.
@@ -163,17 +163,6 @@ class RemoteDiskBackend(StorageBackendInterface):
         if not found:
             self.disk_lock.release()
             return None, key
-        
-        # Update key
-        if key.metadata.context_id[0] not in old_key.metadata.context_id: 
-            old_key.metadata.context_id.append(key.metadata.context_id[0])
-            old_key.metadata.method.append(key.metadata.method[0])
-            old_key.metadata.score_table.append(key.metadata.score_table[0])
-            old_key.metadata.disk_score_table.append(key.metadata.disk_score_table[0])
-        # Record request pattern
-        if emerge_id:
-            old_key.metadata.emerge_id.append(emerge_id)
-            self.dict[old_key] = self.dict.pop(key)
 
         path = self.dict[old_key].path
         dtype = self.dict[old_key].dtype

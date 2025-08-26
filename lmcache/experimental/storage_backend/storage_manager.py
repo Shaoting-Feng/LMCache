@@ -6,7 +6,8 @@ from typing import Dict, List, Optional, Tuple, Union
 from torch import Tensor
 import copy
 import torch
-
+import math
+import time
 from lmcache.config import LMCacheEngineMetadata
 from lmcache.experimental.config import LMCacheEngineConfig
 from lmcache.experimental.memory_management import (MemoryAllocatorInterface,
@@ -310,6 +311,7 @@ class StorageManager:
         self.policy = config.policy
         self.update_queue: OrderedDict[CacheEngineKey, MemoryObj] = OrderedDict()
         self.to_delete_list: Dict[CacheEngineKey, int] = {}
+        self.sliding_lambda = 2 * math.log(2) / config.sliding_window_size
 
     def allocate(
         self,
@@ -418,9 +420,9 @@ class StorageManager:
                 # Already compressed in LocalCPUBackend, needs recompression
                 if update_key.metadata.rate != 1 and update_key.metadata.rate != update_rate: 
                     self.memory_allocator.ref_count_down(update_memory_obj)
-                    update_memory_obj = self.storage_backends["RemoteDiskBackend"].get_blocking(update_key, None)
+                    update_memory_obj = self.storage_backends["RemoteDiskBackend"].get_blocking(update_key)
             
-                # Need to serialize
+                # Need to compress
                 if update_key.metadata.rate != update_rate:
                     compressed_update_memory_obj, metadata, entry_offsets, split_metadata, quant_metadata, quant_entry_offsets = self.kivi_ser.serialize(update_memory_obj, BITS)
                     if type(update_memory_obj) != Tensor:
@@ -491,7 +493,6 @@ class StorageManager:
                     self.manager_lock.release()
                     return
 
-            # TODO(Shaoting): add third tier storage (remote ssd)
             if current_kv_decision.device == "disk" and current_kv_decision.compression_rate != 0:
                 self.manager_lock.release()
                 self.storage_backends["LocalDiskBackend"].submit_put_task(key, memory_obj)
@@ -547,7 +548,7 @@ class StorageManager:
                 self.memory_allocator.ref_count_up(memory_obj)
             self.manager_lock.release()
 
-    def get(self, key: CacheEngineKey, emerge_id, occurence_number) -> Optional[Union[MemoryObj, Tensor]]:
+    def get(self, key: CacheEngineKey) -> Optional[Union[MemoryObj, Tensor]]:
         """
         Blocking function to get the memory object from the storages.
         """
@@ -584,20 +585,15 @@ class StorageManager:
             self.memory_allocator.ref_count_up(memory_obj)
 
             # Update key
-            if key.metadata.context_id[0] not in old_key.metadata.context_id:
-                old_key.metadata.context_id.append(key.metadata.context_id[0])
-                old_key.metadata.method.append(key.metadata.method[0])
-                old_key.metadata.score_table.append(key.metadata.score_table[0])
-                old_key.metadata.disk_score_table.append(key.metadata.disk_score_table[0])
-            # Record request pattern
-            old_key.metadata.emerge_id.append(emerge_id)
-            # Also for LRU
-            self.hot_cache[old_key] = self.hot_cache.pop(key)
+            t = time.time()
+            delta = t - old_key.metadata.last_update_ts
+            old_key.metadata.frequency_score = old_key.metadata.frequency_score * math.exp(-self.sliding_lambda * delta) + 1
+            old_key.metadata.last_update_ts = t
 
             self.manager_lock.release()
 
             # De-compress memory_obj
-            if old_key.metadata.method[0] == "kivi" and old_key.metadata.rate != 1:  
+            if old_key.metadata.method == "kivi" and old_key.metadata.rate != 1:  
 
                 # KIVI mapping defined here
                 if old_key.metadata.rate == 0.728571429:
@@ -615,17 +611,23 @@ class StorageManager:
 
         self.manager_lock.release()
 
-        memory_obj, new_key = self.storage_backends["LocalDiskBackend"].get_blocking(key, emerge_id)
+        memory_obj, new_key = self.storage_backends["LocalDiskBackend"].get_blocking(key)
         
         if memory_obj is not None:
 
-            # In memory update (from local disk to cpu)
-            self.put_in_queue(new_key, memory_obj)
-            self.memory_allocator.ref_count_up(memory_obj)
-            self.to_delete_list[new_key] = memory_obj.get_physical_size()
+            # Update key
+            t = time.time()
+            delta = t - new_key.metadata.last_update_ts
+            new_key.metadata.frequency_score = new_key.metadata.frequency_score * math.exp(-self.sliding_lambda * delta) + 1
+            new_key.metadata.last_update_ts = t
+
+            # # In memory update (from local disk to cpu)
+            # self.put_in_queue(new_key, memory_obj)
+            # self.memory_allocator.ref_count_up(memory_obj)
+            # self.to_delete_list[new_key] = memory_obj.get_physical_size()
 
             # De-compress memory_obj
-            if new_key.metadata.method[0] == "kivi" and new_key.metadata.rate != 1:  
+            if new_key.metadata.method == "kivi" and new_key.metadata.rate != 1:  
 
                 # KIVI mapping defined here
                 if new_key.metadata.rate == 0.728571429:

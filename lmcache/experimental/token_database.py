@@ -10,7 +10,7 @@ from lmcache.utils import CacheEngineKey, CacheManagerMetadata
 import os
 import pandas as pd
 import random
-
+import time
 random.seed(42)
 
 logger = init_logger(__name__)
@@ -30,7 +30,6 @@ class TokenDatabase(metaclass=abc.ABCMeta):
         self,
         tokens: torch.Tensor,
         mask: Optional[torch.Tensor] = None,
-        id: Optional[int] = None,
     ) -> Iterable[Tuple[int, int, CacheEngineKey, int]]:
         """Process the tokens and return the corresponding cache engine keys.
 
@@ -223,9 +222,9 @@ class ChunkedTokenDatabase(TokenDatabase):
         if os.path.exists(self.method_output_csv):
             os.remove(self.method_output_csv)
 
-    def _make_key_by_hash(self, chunk_hash: str, total_hashes: str, token_len: int, id: int) -> Tuple[CacheEngineKey, int]:
+    def _make_key_by_hash(self, chunk_hash: str, total_hashes: str, token_len: int) -> Tuple[CacheEngineKey, int]:
+        id = 0
         dataset_value = self._dataset_df.iloc[id]["dataset"]
-        occurrence = self._dataset_df.iloc[id]["occurrence_number"]
         index_in_dataset = self._dataset_df.iloc[id]["index_in_dataset"]
         
         method_value = None                    
@@ -361,10 +360,11 @@ class ChunkedTokenDatabase(TokenDatabase):
                     writer.writerow(["index", "dataset", "method"])
                 writer.writerow([index_in_dataset, dataset_value, mode])
 
+        last_update_ts = time.time()
         return CacheEngineKey(self.metadata.fmt, self.metadata.model_name,
                               self.metadata.world_size,
                               self.metadata.worker_id, chunk_hash,
-                              CacheManagerMetadata([total_hashes], ["kivi"], 1, 0.0, token_len, [score_table], [], [disk_score_table])), occurrence
+                              CacheManagerMetadata(total_hashes, "kivi", 1, 0.0, token_len, score_table, 1, last_update_ts, disk_score_table))
 
     def _get_init_hash(self) -> str:
         return ""
@@ -408,7 +408,6 @@ class ChunkedTokenDatabase(TokenDatabase):
         self,
         tokens: torch.Tensor,
         mask: Optional[torch.Tensor] = None,
-        id: Optional[int] = None,
     ) -> Iterable[Tuple[int, int, CacheEngineKey, int]]:
         """Process the tokens and return the corresponding cache engine keys.
 
@@ -449,6 +448,6 @@ class ChunkedTokenDatabase(TokenDatabase):
             if start_idx < num_falses:
                 continue
             else:
-                key, occurrence = self._make_key_by_hash(
-                    hash_val, total_hashes, total_len, id)
-                yield start_idx, end_idx, key, occurrence
+                key = self._make_key_by_hash(
+                    hash_val, total_hashes, total_len)
+                yield start_idx, end_idx, key

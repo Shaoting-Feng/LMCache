@@ -62,8 +62,6 @@ class LMCacheEngine:
         InitializeUsageContext(config.to_original_config(), metadata)
         self.stats_monitor = LMCStatsMonitor.GetOrCreate()
 
-        self.emerge_id = 0
-
     @_lmcache_nvtx_annotate
     @torch.inference_mode()
     def store(self,
@@ -93,8 +91,8 @@ class LMCacheEngine:
         else:
             monitor_req_id = self.stats_monitor.on_store_request(len(tokens))
 
-        for start, end, key, occ in self.token_database.process_tokens(
-                tokens, mask, self.emerge_id):
+        for start, end, key in self.token_database.process_tokens(
+                tokens, mask):
             if self.storage_manager.contains(key):
                 continue
             # Allocate the memory object
@@ -109,7 +107,6 @@ class LMCacheEngine:
                 )
 
             self.gpu_connector.from_gpu(memory_obj, start, end, **kwargs)
-            key.metadata.emerge_id.append(self.emerge_id)
             size_in_bytes = memory_obj.get_size()
             key.metadata.length = size_in_bytes
             self.storage_manager.put_in_queue(key, memory_obj)
@@ -117,7 +114,6 @@ class LMCacheEngine:
 
     def update(self) -> None:
         self.storage_manager.update()
-        self.emerge_id += 1
 
     @_lmcache_nvtx_annotate
     @torch.inference_mode()
@@ -154,11 +150,11 @@ class LMCacheEngine:
                 len(tokens))
 
         ret_mask = torch.zeros_like(tokens, dtype=torch.bool, device="cpu")
-        for start, end, key, occ in self.token_database.process_tokens(
-                tokens, mask, self.emerge_id):
+        for start, end, key in self.token_database.process_tokens(
+                tokens, mask):
 
             # Get the memory object from the storage backend
-            memory_obj = self.storage_manager.get(key, self.emerge_id, occ)
+            memory_obj = self.storage_manager.get(key)
 
             if memory_obj is None:
                 break
@@ -188,8 +184,8 @@ class LMCacheEngine:
         """Launch the prefetching process in the storage manager to load the 
         KV to the local CPU memory
         """
-        for start, end, key, occ in self.token_database.process_tokens(
-                tokens, mask, self.emerge_id):
+        for start, end, key in self.token_database.process_tokens(
+                tokens, mask):
             self.storage_manager.prefetch(key)
 
     # TODO(Jiayi): Currently, search_range is only used for testing.
@@ -210,7 +206,7 @@ class LMCacheEngine:
         :return: An int indicating how many prefix tokens are cached.
         """
 
-        for start, end, key, occ in self.token_database.process_tokens(tokens, None, self.emerge_id):
+        for start, end, key in self.token_database.process_tokens(tokens, None):
             if not self.storage_manager.contains(key, search_range):
                 return start
         return end
