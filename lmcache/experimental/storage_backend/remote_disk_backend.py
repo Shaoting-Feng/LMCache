@@ -10,7 +10,9 @@ import torch
 
 from lmcache.config import LMCacheEngineMetadata
 from lmcache.experimental.config import LMCacheEngineConfig
-from lmcache.experimental.memory_management import (MemoryAllocatorInterface, MemoryObj, MemoryFormat, BytesBufferMemoryObj)
+from lmcache.experimental.memory_management import (MemoryAllocatorInterface,
+                                                    MemoryObj, MemoryFormat,
+                                                    BytesBufferMemoryObj)
 from lmcache.experimental.storage_backend.abstract_backend import \
     StorageBackendInterface
 from lmcache.experimental.storage_backend.evictor import LRUEvictor, PutStatus
@@ -51,8 +53,7 @@ class RemoteDiskBackend(StorageBackendInterface):
         self.policy = config.policy
 
         self.serializer, self.deserializer = CreateSerde(
-            "cachegen", metadata, config
-        )
+            "cachegen", metadata, config)
 
     def __str__(self):
         return self.__class__.__name__
@@ -75,9 +76,10 @@ class RemoteDiskBackend(StorageBackendInterface):
         self,
         key: CacheEngineKey,
     ) -> None:
-        
+
         logger.info(f"Manually removing {key} from disk cache.")
-        logger.info(f"Then disk cache size: {self.evictor.current_cache_size} bytes")
+        logger.info(
+            f"Then disk cache size: {self.evictor.current_cache_size} bytes")
 
         path = self.dict[key].path
         self.disk_lock.acquire()
@@ -120,7 +122,8 @@ class RemoteDiskBackend(StorageBackendInterface):
         self.memory_allocator.ref_count_up(compressed_memory_obj)
 
         future = asyncio.run_coroutine_threadsafe(
-            self.async_save_bytes_to_disk(key, compressed_memory_obj), self.loop)
+            self.async_save_bytes_to_disk(key, compressed_memory_obj),
+            self.loop)
         return future
 
     def submit_prefetch_task(
@@ -148,8 +151,7 @@ class RemoteDiskBackend(StorageBackendInterface):
         return future
 
     def get_blocking(
-        self,
-        key: CacheEngineKey
+            self, key: CacheEngineKey
     ) -> Tuple[Union[MemoryObj, str], CacheEngineKey]:
         """
         Blocking get function.
@@ -214,12 +216,13 @@ class RemoteDiskBackend(StorageBackendInterface):
         """
         Async load bytearray from disk.
         """
-        memory_obj = self.memory_allocator.allocate(shape, dtype, fmt=MemoryFormat.KV_BLOB2)
+        memory_obj = self.memory_allocator.allocate(shape,
+                                                    dtype,
+                                                    fmt=MemoryFormat.KV_BLOB2)
         if memory_obj is None:
             raise RuntimeError(
                 "Failed to allocate memory for the async remote-retrieved KV cache.\n"
-                "The KV cache will not be stored."
-            )
+                "The KV cache will not be stored.")
         buffer = memory_obj.byte_array
         async with aiofiles.open(path, 'rb') as f:
             await f.readinto(buffer)
@@ -247,18 +250,18 @@ class RemoteDiskBackend(StorageBackendInterface):
             memory_obj = BytesBufferMemoryObj(buffer)
             return memory_obj
         else:
-            memory_obj = self.memory_allocator.allocate(shape, dtype, MemoryFormat.KV_BLOB2)
+            memory_obj = self.memory_allocator.allocate(
+                shape, dtype, MemoryFormat.KV_BLOB2)
             if memory_obj is None:
                 raise RuntimeError(
                     "Failed to allocate memory for the sync remote-retrieved KV cache.\n"
-                    "The KV cache will not be stored."
-                )
-            
+                    "The KV cache will not be stored.")
+
             ##### 3
             TARGET_RATE = 0.5 * 1024**3  # 0.5 GiB/s
 
             fd = os.open(path, os.O_RDONLY | os.O_DIRECT)
-            f  = os.fdopen(fd, 'rb', buffering=0)
+            f = os.fdopen(fd, 'rb', buffering=0)
 
             while True:
                 t0 = time.perf_counter()

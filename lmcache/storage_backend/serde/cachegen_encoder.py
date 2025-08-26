@@ -22,7 +22,8 @@ logger = init_logger(__name__)
 
 
 @_lmcache_nvtx_annotate
-def torch_quant(bins: int, qA: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+def torch_quant(bins: int,
+                qA: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Quantize a float tensor to fixed number of bins
 
@@ -44,8 +45,8 @@ def torch_quant(bins: int, qA: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor
 
 @_lmcache_nvtx_annotate
 def torch_quant_vectorized(
-    bins: torch.Tensor, input_groups: torch.Tensor
-) -> Tuple[torch.Tensor, torch.Tensor]:
+        bins: torch.Tensor,
+        input_groups: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
     """
     Quantize each group of a tensor to fixed number of bins
 
@@ -58,13 +59,11 @@ def torch_quant_vectorized(
         maxes: [nlayers, ntokens, 1]
     """
     MAX = (bins // 2 - 1)[:, None, None]  # shape [nlayers, 1, 1]
-    max1 = torch.amax(
-        torch.abs(input_groups), dim=-1, keepdim=True
-    )  # shape [nlayers, ntokens, 1]
+    max1 = torch.amax(torch.abs(input_groups), dim=-1,
+                      keepdim=True)  # shape [nlayers, ntokens, 1]
     factor = MAX / max1  # shape [nlayers, ntokens, 1]
     xq = torch.round(input_groups * factor + MAX).to(
-        torch.int8
-    )  # shape [nlayers, ntokens, nchannels]
+        torch.int8)  # shape [nlayers, ntokens, nchannels]
 
     return xq, max1
 
@@ -94,9 +93,9 @@ def _split_kv(tensor: torch.Tensor) -> Tuple[torch.Tensor, ...]:
             [num_layers, num_tokens, num_channels]
     """
     num_layers, _, num_tokens, num_heads, head_size = tensor.shape
-    return torch.unbind(
-        tensor.reshape(num_layers, 2, num_tokens, num_heads * head_size), dim=1
-    )
+    return torch.unbind(tensor.reshape(num_layers, 2, num_tokens,
+                                       num_heads * head_size),
+                        dim=1)
 
 
 @_lmcache_nvtx_annotate
@@ -120,9 +119,8 @@ def _convert_to_int_and_normalize(cdf_float, needs_normalization):
     """
     PRECISION = 16
     Lp = cdf_float.shape[-1]
-    factor = torch.tensor(2, dtype=torch.float32, device=cdf_float.device).pow_(
-        PRECISION
-    )
+    factor = torch.tensor(2, dtype=torch.float32,
+                          device=cdf_float.device).pow_(PRECISION)
     new_max_value = factor
     if needs_normalization:
         new_max_value = new_max_value - (Lp - 1)
@@ -136,6 +134,7 @@ def _convert_to_int_and_normalize(cdf_float, needs_normalization):
 
 
 class CacheGenEncoderImpl:
+
     def __init__(self, **kwargs) -> None:
         """
         Fields:
@@ -195,9 +194,9 @@ class CacheGenEncoderImpl:
             input shape should be [channels, tokens]
             """
             nchannels, ntokens = X.shape
-            one_hot = torch.nn.functional.one_hot(X.long(), num_classes=max_val + 1).to(
-                torch.float32
-            )  # Use float32 to avoid integer overflow
+            one_hot = torch.nn.functional.one_hot(
+                X.long(), num_classes=max_val + 1).to(
+                    torch.float32)  # Use float32 to avoid integer overflow
             counts = one_hot.sum(dim=1) / ntokens
             ret = torch.cumsum(counts, dim=1).roll(1)
             ret[:, 0] = 0
@@ -223,7 +222,8 @@ class CacheGenEncoderImpl:
         else:
             X = self.quantized_value.values()
         value_range = 32
-        cdfs = process_layers(X, value_range)  # 4096 is batch size, ==> 18GB GPU memory
+        cdfs = process_layers(
+            X, value_range)  # 4096 is batch size, ==> 18GB GPU memory
         final_cdf = cdfs.reshape((len(self.fp_k), channels, value_range + 1))
 
         return final_cdf
@@ -246,9 +246,8 @@ def collect_bytes(output_buffer, output_lengths) -> torch.Tensor:
 
 
 @_lmcache_nvtx_annotate
-def encode_ntokens(
-    cdf_int, encode_input, output_buffer, output_lengths
-) -> torch.Tensor:
+def encode_ntokens(cdf_int, encode_input, output_buffer,
+                   output_lengths) -> torch.Tensor:
     """Encode a batch of ntokens.
 
     :param cdf_int: int16 tensor on GPU with shape [nlayers, nchannels, Lp]
@@ -289,9 +288,8 @@ def encode_function(
 
     new_key, max_tensors_key = torch_quant_vectorized(key_bins, fp_k)
     new_value, max_tensors_value = torch_quant_vectorized(value_bins, fp_v)
-    encode_input = torch.cat((new_key, new_value), dim=0).reshape(
-        nlayers, chunk_size, nchannels
-    )
+    encode_input = torch.cat((new_key, new_value),
+                             dim=0).reshape(nlayers, chunk_size, nchannels)
 
     new_cdf_key = lmc_ops.calculate_cdf(new_key, int(key_bins.max()))
     new_cdf_value = lmc_ops.calculate_cdf(new_value, int(value_bins.max()))
@@ -302,9 +300,9 @@ def encode_function(
         dtype=torch.uint8,
         device=encode_input.device,
     )
-    output_lengths = torch.zeros(
-        (nlayers, nchannels), dtype=torch.int32, device=encode_input.device
-    )
+    output_lengths = torch.zeros((nlayers, nchannels),
+                                 dtype=torch.int32,
+                                 device=encode_input.device)
 
     data_chunks = []
     for i in range(0, chunk_size, CGBasics.CACHEGEN_GPU_MAX_TOKENS_PER_CHUNK):
@@ -321,8 +319,7 @@ def encode_function(
                 bytestream=bytestream,
                 bytestream_lengths=output_lengths.clone(),
                 ntokens=end - start,
-            )
-        )
+            ))
 
     return CacheGenGPUEncoderOutput(
         data_chunks,
@@ -335,8 +332,11 @@ def encode_function(
 
 
 class CacheGenSerializer(Serializer):
-    def __init__(self, config: LMCacheEngineConfig, metadata: LMCacheEngineMetadata):
-        self.cachegen_config = CacheGenConfig.from_model_name(metadata.model_name)
+
+    def __init__(self, config: LMCacheEngineConfig,
+                 metadata: LMCacheEngineMetadata):
+        self.cachegen_config = CacheGenConfig.from_model_name(
+            metadata.model_name)
         self.chunk_size = config.chunk_size
         self.fmt = metadata.fmt
         self.key_bins = self.make_key_bins(self.cachegen_config)
@@ -345,13 +345,13 @@ class CacheGenSerializer(Serializer):
     def make_key_bins(self, config: CacheGenConfig) -> torch.Tensor:
         ret = torch.zeros(config.nlayers)
         for spec in config.kspecs:
-            ret[spec.start_layer : spec.end_layer] = spec.bins
+            ret[spec.start_layer:spec.end_layer] = spec.bins
         return ret.cuda()
 
     def make_value_bins(self, config: CacheGenConfig) -> torch.Tensor:
         ret = torch.zeros(config.nlayers)
         for spec in config.vspecs:
-            ret[spec.start_layer : spec.end_layer] = spec.bins
+            ret[spec.start_layer:spec.end_layer] = spec.bins
         return ret.cuda()
 
     @_lmcache_nvtx_annotate

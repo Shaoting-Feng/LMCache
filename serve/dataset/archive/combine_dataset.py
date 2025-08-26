@@ -3,23 +3,25 @@ import argparse
 import pandas as pd
 import numpy as np
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Combine two CSVs, replicate each row three times with Poisson‐distributed time intervals, and output a single processed CSV.")
-    parser.add_argument(
-        "--input1", "-i1",
-        required=True,
-        help="Path to the first input CSV (e.g., samsum.csv)."
+    parser = argparse.ArgumentParser(
+        description=
+        "Combine two CSVs, replicate each row three times with Poisson‐distributed time intervals, and output a single processed CSV."
     )
+    parser.add_argument("--input1",
+                        "-i1",
+                        required=True,
+                        help="Path to the first input CSV (e.g., samsum.csv).")
+    parser.add_argument("--input2",
+                        "-i2",
+                        required=True,
+                        help="Path to the second input CSV (e.g., qmsum.csv).")
     parser.add_argument(
-        "--input2", "-i2",
+        "--output",
+        "-o",
         required=True,
-        help="Path to the second input CSV (e.g., qmsum.csv)."
-    )
-    parser.add_argument(
-        "--output", "-o",
-        required=True,
-        help="Path for the output CSV (e.g., sum_processed.csv)."
-    )
+        help="Path for the output CSV (e.g., sum_processed.csv).")
     args = parser.parse_args()
 
     # ——— 步骤 1：读取两个 CSV，并添加 index_in_dataset（0–N） ———
@@ -43,11 +45,7 @@ def main():
     for i, row in df.iterrows():
         base = base_times[i]
         dt_within = np.random.poisson(lam=100, size=2)
-        times = [
-            base,
-            base + dt_within[0],
-            base + dt_within[0] + dt_within[1]
-        ]
+        times = [base, base + dt_within[0], base + dt_within[0] + dt_within[1]]
         for occ_num, start in enumerate(times, start=1):
             rec = row.to_dict()
             rec['occurrence_number'] = occ_num
@@ -60,6 +58,7 @@ def main():
     df_out = df_out.sort_values('start_time').reset_index(drop=True)
     df_out.to_csv(args.output, index=False)
     print(f"生成完成：{args.output} 共 {len(df_out)} 行")
+
 
 if __name__ == "__main__":
     main()

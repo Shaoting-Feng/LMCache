@@ -21,7 +21,10 @@ FILES = [
 # Sends each CSV entry as a separate request
 # No index insertion or CSV reuse logic
 
-def execute_openai_request_with_output(row, model: str, client: openai.Client) -> Tuple[float, float, float, float, str]:
+
+def execute_openai_request_with_output(
+        row, model: str,
+        client: openai.Client) -> Tuple[float, float, float, float, str]:
     """
     Execute a single request to the OpenAI engine
     Returns: start_time (seconds), TTFT (seconds), finish_time (seconds), throughput (tokens per second), and generated text
@@ -35,18 +38,16 @@ def execute_openai_request_with_output(row, model: str, client: openai.Client) -
             f"--- Repository context ---\n{row.context}\n\n"
             f"--- File context ---\n{row.input}\n\n"
             "Please output **only** the exact next line of code as given in the dataset’s answers field. "
-            "Do **not** include any IDs, tabs, headings or extra text."
-        )
+            "Do **not** include any IDs, tabs, headings or extra text.")
     elif row.dataset == "lcc_e":
         prompt = (
             f"This is a next-line prediction task for user {row.index_in_dataset} in the {row.dataset} dataset "
             f"(language: {row.language}).\n\n"
             "You are an expert code assistant. Given a long code snippet, "
-            "predict the exact next line of code." 
+            "predict the exact next line of code."
             f"{row.context}\n\n"
-            "Do not include any extra text, comments, or explanations."
-        )
-    
+            "Do not include any extra text, comments, or explanations.")
+
     messages = [{"role": "user", "content": prompt}]
 
     try:
@@ -95,17 +96,15 @@ def create_openai_client(port: int, model) -> openai.Client:
 def main():
     # parse output filename
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--output", "-o",
-        default="result.csv",
-        help="Output CSV file name"
-    )
-    parser.add_argument(
-        "--port", "-p",
-        default=8000,
-        type=int,
-        help="Port number for OpenAI API"
-    )
+    parser.add_argument("--output",
+                        "-o",
+                        default="result.csv",
+                        help="Output CSV file name")
+    parser.add_argument("--port",
+                        "-p",
+                        default=8000,
+                        type=int,
+                        help="Port number for OpenAI API")
     args = parser.parse_args()
 
     # Load the workload trace
@@ -125,8 +124,7 @@ def main():
     for row in workload_trace.itertuples():
         # Execute the OpenAI request
         st, ttft, finish_time, throughput, generated_answer = execute_openai_request_with_output(
-            row, MODEL, client
-        )
+            row, MODEL, client)
         start_times.append(st)
         answers.append(generated_answer)
         ttfts.append(ttft)

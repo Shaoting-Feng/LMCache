@@ -4,28 +4,28 @@ from our_metrics import evaluate_answer, f1_score, codebleu_score
 import os
 import argparse
 
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Evaluate ROUGE-L (or F1) similarity for a set of input CSVs against a reference CSV"
+        description=
+        "Evaluate ROUGE-L (or F1) similarity for a set of input CSVs against a reference CSV"
     )
     parser.add_argument(
         "--inputs",
         nargs="+",
         metavar="INPUT",
         required=True,
-        help="One or more input CSV paths (formerly INPUT02, INPUT03, INPUT06, etc.)"
+        help=
+        "One or more input CSV paths (formerly INPUT02, INPUT03, INPUT06, etc.)"
     )
-    parser.add_argument(
-        "--input0",
-        required=True,
-        help="Path to the reference CSV (formerly INPUT0)"
-    )
+    parser.add_argument("--input0",
+                        required=True,
+                        help="Path to the reference CSV (formerly INPUT0)")
     parser.add_argument(
         "--metric",
         choices=["rouge", "f1", "codebleu"],
         default="rouge",
-        help="Which metric to use: 'rouge' for ROUGE-L, 'f1' for F1 score"
-    )
+        help="Which metric to use: 'rouge' for ROUGE-L, 'f1' for F1 score")
     args = parser.parse_args()
 
     # Choose metric function based on --metric argument
@@ -47,8 +47,7 @@ def main():
 
     # Generate processed filenames for each CSV (including reference)
     filenames = [
-        os.path.splitext(path)[0] + "_processed.csv"
-        for path in input_paths
+        os.path.splitext(path)[0] + "_processed.csv" for path in input_paths
     ]
 
     # Process each CSV in turn
@@ -65,25 +64,19 @@ def main():
                 if lang == "csharp":
                     lang = "c_sharp"
 
-                score = metric_func(
-                    row["answer"],
-                    reference_answers[idx],
-                    lang
-                )
+                score = metric_func(row["answer"], reference_answers[idx],
+                                    lang)
                 rougel_scores.append(score)
             df["ROUGEL"] = rougel_scores
         else:
-            df["ROUGEL"] = df.apply(
-                lambda row: metric_func(
-                    row["answer"],
-                    reference_answers[row.name]
-                ),
-                axis=1
-            )
+            df["ROUGEL"] = df.apply(lambda row: metric_func(
+                row["answer"], reference_answers[row.name]),
+                                    axis=1)
 
         # Save
         df.to_csv(fname, index=False)
         print(f"Processed CSV saved to {fname}")
+
 
 if __name__ == "__main__":
     main()

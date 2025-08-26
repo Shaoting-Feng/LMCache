@@ -31,17 +31,20 @@ TORCH_DTYPE_TO_STR_DTYPE = {
     torch.float8_e5m2: "fp8_e5m2",
 }
 
+
 @dataclass
 class CacheManagerMetadata:
     context_id: str
     method: str
     rate: float
-    length: float # real-time chunk bytes size
-    num_tokens: int # number of all tokens in a context
-    score_table: List[Tuple[float, float]] # a list of (rate, score) pairs
+    length: float  # real-time chunk bytes size
+    num_tokens: int  # number of all tokens in a context
+    score_table: List[Tuple[float, float]]  # a list of (rate, score) pairs
     frequency_score: float
     last_update_ts: float
-    disk_score_table: List[Tuple[float, float]] # a list of (rate, score) pairs
+    disk_score_table: List[Tuple[float,
+                                 float]]  # a list of (rate, score) pairs
+
 
 @dataclass(order=True)
 class CacheEngineKey:
@@ -60,17 +63,14 @@ class CacheEngineKey:
             self.worker_id,
             self.chunk_hash,
         ))
-    
+
     def __eq__(self, other):
         if not isinstance(other, CacheEngineKey):
             return False
-        return (
-            self.fmt == other.fmt and
-            self.model_name == other.model_name and
-            self.world_size == other.world_size and
-            self.worker_id == other.worker_id and
-            self.chunk_hash == other.chunk_hash
-        )
+        return (self.fmt == other.fmt and self.model_name == other.model_name
+                and self.world_size == other.world_size
+                and self.worker_id == other.worker_id
+                and self.chunk_hash == other.chunk_hash)
 
     def to_string(self):
         return f"{self.fmt}@{self.model_name}@{self.world_size}"\
@@ -81,8 +81,9 @@ class CacheEngineKey:
         parts = s.split("@")
         if len(parts) != 5:
             raise ValueError(f"Invalid key string: {s}")
-        return CacheEngineKey(parts[0], parts[1], int(parts[2]), int(parts[3]),
-                              parts[4], CacheManagerMetadata(None, None, 0, 0, 0, [], 0, 0, []))
+        return CacheEngineKey(
+            parts[0], parts[1], int(parts[2]), int(parts[3]), parts[4],
+            CacheManagerMetadata(None, None, 0, 0, 0, [], 0, 0, []))
 
 
 ##### NVTX annotation #####

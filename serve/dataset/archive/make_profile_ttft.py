@@ -15,14 +15,14 @@ header = [
 ]
 
 # New top‐rows: both length=500, indexes 4 and 5, occurrence_number=1
-top_lengths   = [500, 500]
-top_indexes   = [6, 7]
-top_occurs    = [1, 1]
+top_lengths = [500, 500]
+top_indexes = [6, 7]
+top_occurs = [1, 1]
 
 # Original six rows
-lengths       = [8000, 10000, 12000, 14000, 16000, 8000, 10000, 12000, 14000, 16000]
-indexes       = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
-occurrences   = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]
+lengths = [8000, 10000, 12000, 14000, 16000, 8000, 10000, 12000, 14000, 16000]
+indexes = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+occurrences = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2]
 
 rows = []
 

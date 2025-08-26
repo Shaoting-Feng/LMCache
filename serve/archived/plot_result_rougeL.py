@@ -2,7 +2,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # List of file paths
-file_paths = ['results/baseline_kivi_2.csv', 'results/baseline_kivi_4.csv', 'results/baseline_kivi_8.csv', 'results/baseline_no_compression.csv', 'results/baseline_prefill.csv']
+file_paths = [
+    'results/baseline_kivi_2.csv', 'results/baseline_kivi_4.csv',
+    'results/baseline_kivi_8.csv', 'results/baseline_no_compression.csv',
+    'results/baseline_prefill.csv'
+]
 
 # Lists to store computed values
 ttft_values = []
@@ -33,7 +37,10 @@ plt.scatter(ttft_values, rougeL_fmeasure_values, color='b', marker='o')
 
 # Annotate points with file names
 for i, label in enumerate(file_labels):
-    plt.annotate(label, (ttft_values[i], rougeL_fmeasure_values[i]), fontsize=10, xytext=(5,5), textcoords='offset points')
+    plt.annotate(label, (ttft_values[i], rougeL_fmeasure_values[i]),
+                 fontsize=10,
+                 xytext=(5, 5),
+                 textcoords='offset points')
 
 # Labels and title
 plt.xlabel("Average ttft")

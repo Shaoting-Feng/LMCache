@@ -6,7 +6,9 @@ import torch
 from lmcache.config import LMCacheEngineMetadata
 from lmcache.experimental.config import LMCacheEngineConfig
 from lmcache.experimental.gpu_connector import GPUConnectorInterface
-from lmcache.experimental.memory_management import (MemoryAllocatorInterface, MixedMemoryAllocator, MemoryFormat)
+from lmcache.experimental.memory_management import (MemoryAllocatorInterface,
+                                                    MixedMemoryAllocator,
+                                                    MemoryFormat)
 from lmcache.experimental.storage_backend.storage_manager import StorageManager
 from lmcache.experimental.token_database import (ChunkedTokenDatabase,
                                                  TokenDatabase)
@@ -99,12 +101,12 @@ class LMCacheEngine:
             num_tokens = end - start
             kv_shape = self.gpu_connector.get_shape(num_tokens)
             kv_dtype = self.metadata.kv_dtype
-            memory_obj = self.storage_manager.memory_allocator.allocate(kv_shape, kv_dtype, MemoryFormat.KV_BLOB2)
+            memory_obj = self.storage_manager.memory_allocator.allocate(
+                kv_shape, kv_dtype, MemoryFormat.KV_BLOB2)
             if memory_obj is None:
                 raise RuntimeError(
                     "Failed to allocate memory for the new-coming KV cache.\n"
-                    "The KV cache will not be stored."
-                )
+                    "The KV cache will not be stored.")
 
             self.gpu_connector.from_gpu(memory_obj, start, end, **kwargs)
             size_in_bytes = memory_obj.get_size()
@@ -167,7 +169,8 @@ class LMCacheEngine:
             # RDMA is another example.
 
             if type(memory_obj) == torch.Tensor:
-                self.gpu_connector.tensor_to_gpu(memory_obj, start, end, **kwargs)
+                self.gpu_connector.tensor_to_gpu(memory_obj, start, end,
+                                                 **kwargs)
             else:
                 self.gpu_connector.to_gpu(memory_obj, start, end, **kwargs)
                 self.memory_allocator.ref_count_down(memory_obj)
@@ -206,7 +209,8 @@ class LMCacheEngine:
         :return: An int indicating how many prefix tokens are cached.
         """
 
-        for start, end, key in self.token_database.process_tokens(tokens, None):
+        for start, end, key in self.token_database.process_tokens(
+                tokens, None):
             if not self.storage_manager.contains(key, search_range):
                 return start
         return end

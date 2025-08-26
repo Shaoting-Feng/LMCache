@@ -2,6 +2,7 @@
 import argparse
 import matplotlib.pyplot as plt
 
+
 def main(output_path):
     # Hard-coded results
     qps = [0.1, 1, 10, 100, 1000]
@@ -11,14 +12,12 @@ def main(output_path):
     fig, ax = plt.subplots(figsize=(8, 4))
 
     # Plot the single line
-    ax.plot(
-        qps,
-        latency_ms,
-        marker='o',
-        markersize=10,
-        linewidth=5,
-        label='Avg inform_new latency'
-    )
+    ax.plot(qps,
+            latency_ms,
+            marker='o',
+            markersize=10,
+            linewidth=5,
+            label='Avg inform_new latency')
 
     # Log-scale on the x-axis
     ax.set_xscale('log')
@@ -41,14 +40,13 @@ def main(output_path):
     fig.savefig(output_path, dpi=300, bbox_inches='tight')
     print(f'Plot saved to {output_path}')
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Save average inform_new latency vs QPS plot'
-    )
-    parser.add_argument(
-        '-o', '--output',
-        help='Output PNG path (required)',
-        required=True
-    )
+        description='Save average inform_new latency vs QPS plot')
+    parser.add_argument('-o',
+                        '--output',
+                        help='Output PNG path (required)',
+                        required=True)
     args = parser.parse_args()
     main(args.output)

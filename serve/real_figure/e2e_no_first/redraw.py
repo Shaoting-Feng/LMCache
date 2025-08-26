@@ -13,17 +13,13 @@ file_paths1_ours = [
     '../../results/Jun_4_2_sum/ours/1_processed_updated.csv',
     '../../results/Jun_4_2_sum/ours/10_processed_updated.csv',
 ]
-file_paths1_prefill = [
-    '../../results/Jun_4_2_sum/prefill/0_processed.csv'
-]
+file_paths1_prefill = ['../../results/Jun_4_2_sum/prefill/0_processed.csv']
 file_paths1_streaming = [
     '../../results/Jun_4_2_sum/baseline_streaming/02_processed.csv',
     '../../results/Jun_4_2_sum/baseline_streaming/03_processed.csv',
     '../../results/Jun_4_2_sum/baseline_streaming/06_processed.csv',
 ]
-file_paths1_offload = [
-    '../../results/Jun_4_2_sum/prefill/1_processed.csv'
-]
+file_paths1_offload = ['../../results/Jun_4_2_sum/prefill/1_processed.csv']
 
 # ---- Subplot 2 file paths ----
 file_paths2_kivi = [
@@ -43,17 +39,13 @@ file_paths2_ours = [
     # '../../results/Jun_5_1_qa/ours/1_processed_updated.csv',
     # '../../results/Jun_5_1_qa/ours/10_processed_updated.csv',
 ]
-file_paths2_prefill = [
-    '../../results/Jun_5_1_qa/prefill/0_processed.csv'
-]
+file_paths2_prefill = ['../../results/Jun_5_1_qa/prefill/0_processed.csv']
 file_paths2_streaming = [
     '../../results/Jun_5_1_qa/baseline_streaming/02_processed.csv',
     '../../results/Jun_5_1_qa/baseline_streaming/03_processed.csv',
     '../../results/Jun_5_1_qa/baseline_streaming/06_processed.csv',
 ]
-file_paths2_offload = [
-    '../../results/Jun_5_1_qa/prefill/1_processed.csv'
-]
+file_paths2_offload = ['../../results/Jun_5_1_qa/prefill/1_processed.csv']
 
 # ---- Subplot 3 file paths ----
 file_paths3_kivi = [
@@ -67,17 +59,14 @@ file_paths3_ours = [
     '../../results/Jun_19_1_coding/ours/1_processed_updated.csv',
     '../../results/Jun_19_1_coding/ours/10_processed_updated.csv',
 ]
-file_paths3_prefill = [
-    '../../results/Jun_19_1_coding/prefill/0_processed.csv'
-]
+file_paths3_prefill = ['../../results/Jun_19_1_coding/prefill/0_processed.csv']
 file_paths3_streaming = [
     '../../results/Jun_19_1_coding/baseline_streaming/02_processed.csv',
     '../../results/Jun_19_1_coding/baseline_streaming/03_processed.csv',
     '../../results/Jun_19_1_coding/baseline_streaming/06_processed.csv',
 ]
-file_paths3_offload = [
-    '../../results/Jun_19_1_coding/prefill/1_processed.csv'
-]
+file_paths3_offload = ['../../results/Jun_19_1_coding/prefill/1_processed.csv']
+
 
 def load_metrics(file_list, filter_first=False):
     ttft_vals, f1_vals = [], []
@@ -88,6 +77,7 @@ def load_metrics(file_list, filter_first=False):
         ttft_vals.append(df["ttft"].mean())
         f1_vals.append(df["ROUGEL"].mean())
     return ttft_vals, f1_vals
+
 
 subplot_filepaths = [
     {
@@ -114,22 +104,17 @@ subplot_filepaths = [
 ]
 
 subplot_titles = [
-    "Dataset: qmsum & samsum",
-    "Dataset: triviaqa & hotpotqa",
+    "Dataset: qmsum & samsum", "Dataset: triviaqa & hotpotqa",
     "Dataset: lcc_e & repobench_p_e"
 ]
 y_labels = [
-    "Average ROUGE-L Score",
-    "Average F1 Score",
-    "Average CodeBLEU Score"
+    "Average ROUGE-L Score", "Average F1 Score", "Average CodeBLEU Score"
 ]
-methods = [
-    ('Ours', 'ours', 'tab:orange', '^'),
-    ('KIVI LRU', 'kivi', 'tab:blue', 'o'),
-    ('StreamingLLM LRU', 'streaming', 'tab:pink', 's'),
-    ('Prefill', 'prefill', 'tab:green', 'D'),
-    ('Without compression', 'offload', 'tab:red', 'X')
-]
+methods = [('Ours', 'ours', 'tab:orange', '^'),
+           ('KIVI LRU', 'kivi', 'tab:blue', 'o'),
+           ('StreamingLLM LRU', 'streaming', 'tab:pink', 's'),
+           ('Prefill', 'prefill', 'tab:green', 'D'),
+           ('Without compression', 'offload', 'tab:red', 'X')]
 
 fig, axs = plt.subplots(1, 3, figsize=(24, 6), sharex=False, sharey=False)
 for i, ax in enumerate(axs):
@@ -139,24 +124,22 @@ for i, ax in enumerate(axs):
         if i == 2 and key == 'offload':
             print("Skipping offload for subplot 3")
             if ttft and f1:
-                ax.plot(
-                    ttft, 1,
-                    color=color,
-                    marker=marker,
-                    markersize=20,
-                    linewidth=7,
-                    label=label
-                )
+                ax.plot(ttft,
+                        1,
+                        color=color,
+                        marker=marker,
+                        markersize=20,
+                        linewidth=7,
+                        label=label)
         else:
             if ttft and f1:
-                ax.plot(
-                    ttft, f1,
-                    color=color,
-                    marker=marker,
-                    markersize=20,
-                    linewidth=7,
-                    label=label
-                )
+                ax.plot(ttft,
+                        f1,
+                        color=color,
+                        marker=marker,
+                        markersize=20,
+                        linewidth=7,
+                        label=label)
     ax.set_xlabel("Average TTFT (s)", fontsize=25)
     ax.set_ylabel(y_labels[i], fontsize=25)
     ax.set_title(subplot_titles[i], fontsize=25)
@@ -166,7 +149,13 @@ for i, ax in enumerate(axs):
 
 # Shared legend
 handles, labels = axs[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc='upper center', ncol=len(labels), fontsize=25, frameon=False, bbox_to_anchor=(0.5, 1.07))
+fig.legend(handles,
+           labels,
+           loc='upper center',
+           ncol=len(labels),
+           fontsize=25,
+           frameon=False,
+           bbox_to_anchor=(0.5, 1.07))
 plt.tight_layout(rect=[0, 0, 1, 0.97])
 plt.savefig("all_metrics.pdf", dpi=300, bbox_inches="tight")
 print("Plot saved as all_metrics.pdf")

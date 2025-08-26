@@ -11,9 +11,11 @@ import os
 import pandas as pd
 import random
 import time
+
 random.seed(42)
 
 logger = init_logger(__name__)
+
 
 class TokenDatabase(metaclass=abc.ABCMeta):
     """TokenDatabase is used to convert input tokens into list of
@@ -47,9 +49,11 @@ class TokenDatabase(metaclass=abc.ABCMeta):
         """
 
         raise NotImplementedError
-    
+
+
 def hash_all_tokens(tokens: torch.Tensor) -> str:
     return hashlib.sha256(tokens.cpu().numpy().tobytes()).hexdigest()
+
 
 def load_linear_coefficients(csv_path: str) -> dict:
     """
@@ -61,6 +65,7 @@ def load_linear_coefficients(csv_path: str) -> dict:
         for row in reader:
             coefficients[row["filename"]] = (float(row["a"]), float(row["b"]))
     return coefficients
+
 
 def compute_score_table(
     threshold_map: dict[float, str],
@@ -85,6 +90,7 @@ def compute_score_table(
         final_score = 1.0 - base_value * alpha - preset_score
         table.append((threshold, final_score))
     return table
+
 
 def streaming_compute_score_table(
     threshold_map: dict[float, str],
@@ -113,6 +119,7 @@ def streaming_compute_score_table(
         table.append((threshold, final_score))
     return table
 
+
 def compute_min_unit_quality_drop(
     score_table: list[tuple[float, float]],
     token_len: float,
@@ -130,6 +137,7 @@ def compute_min_unit_quality_drop(
             min_unit_drop = unit_drop
 
     return min_unit_drop
+
 
 def choose_score_dict(
     dataset: str,
@@ -196,14 +204,17 @@ def choose_score_dict(
         score06 = 0.38142414825154264
         score1 = 0.9137121644961942
     else:
-        raise ValueError(f"Unsupported dataset {dataset} and compression method {compression_method}.")
+        raise ValueError(
+            f"Unsupported dataset {dataset} and compression method {compression_method}."
+        )
     return {
         1.0: 1 - score1,
         0.728571429: 1 - score06,
         0.485714286: 1 - score03,
         0.371428571: 1 - score02,
-        0.0:  0.0,
+        0.0: 0.0,
     }
+
 
 class ChunkedTokenDatabase(TokenDatabase):
 
@@ -212,139 +223,132 @@ class ChunkedTokenDatabase(TokenDatabase):
         self.chunk_size = config.chunk_size
         self.metadata = metadata
         # Load the coefficients once during initialization.
-        self.coefficients = load_linear_coefficients("linear_coefficients3.csv")
+        self.coefficients = load_linear_coefficients(
+            "linear_coefficients3.csv")
         self.alpha = config.alpha
         self.compression = config.compression
-        logger.info(f"ChunkedTokenDatabase initialized with alpha {self.alpha}.")
+        logger.info(
+            f"ChunkedTokenDatabase initialized with alpha {self.alpha}.")
         self._dataset_df = pd.read_csv(config.dataset_csv)
         self.method_output_csv = config.method_output_csv
 
         if os.path.exists(self.method_output_csv):
             os.remove(self.method_output_csv)
 
-    def _make_key_by_hash(self, chunk_hash: str, total_hashes: str, token_len: int) -> Tuple[CacheEngineKey, int]:
+    def _make_key_by_hash(self, chunk_hash: str, total_hashes: str,
+                          token_len: int) -> Tuple[CacheEngineKey, int]:
         id = 0
         dataset_value = self._dataset_df.iloc[id]["dataset"]
         index_in_dataset = self._dataset_df.iloc[id]["index_in_dataset"]
-        
-        method_value = None                    
+
+        method_value = None
         if os.path.isfile(self.method_output_csv):
-            with open(self.method_output_csv, newline='', encoding='utf-8') as f:
+            with open(self.method_output_csv, newline='',
+                      encoding='utf-8') as f:
                 for row in csv.DictReader(f):
                     if row['index'].strip() == str(index_in_dataset) \
                     and row['dataset'].strip() == dataset_value:
                         method_value = row['method']
                         break
-        
+
         if self.compression == "kivi" or method_value == "kivi":
             threshold_file_mapping = {
-                1.0:   "cpu_1.csv",
+                1.0: "cpu_1.csv",
                 0.728571429: "cpu_06.csv",
                 0.485714286: "cpu_03.csv",
                 0.371428571: "cpu_02.csv",
-                0.0:   "prefill.csv",
+                0.0: "prefill.csv",
             }
             disk_threshold_file_mapping = {
-                1.0:   "1.csv",
+                1.0: "1.csv",
                 0.728571429: "06.csv",
                 0.485714286: "03.csv",
                 0.371428571: "02.csv",
             }
-            score_dict = choose_score_dict(
-                dataset_value, "kivi"
-            )
-            score_table = compute_score_table(
-                threshold_file_mapping, token_len, self.alpha,
-                self.coefficients, score_dict
-            )
-            disk_score_table = compute_score_table(
-                disk_threshold_file_mapping, token_len, self.alpha,
-                self.coefficients, score_dict
-            )
+            score_dict = choose_score_dict(dataset_value, "kivi")
+            score_table = compute_score_table(threshold_file_mapping,
+                                              token_len, self.alpha,
+                                              self.coefficients, score_dict)
+            disk_score_table = compute_score_table(disk_threshold_file_mapping,
+                                                   token_len, self.alpha,
+                                                   self.coefficients,
+                                                   score_dict)
         elif self.compression == "streaming" or method_value == "streaming":
             threshold_file_mapping = {
-                1.0:   "cpu_1.csv",
+                1.0: "cpu_1.csv",
                 0.728571429: "cpu_1.csv",
                 0.485714286: "cpu_1.csv",
                 0.371428571: "cpu_1.csv",
-                0.0:   "prefill.csv",
+                0.0: "prefill.csv",
             }
             disk_threshold_file_mapping = {
-                1.0:   "1.csv",
+                1.0: "1.csv",
                 0.728571429: "1.csv",
                 0.485714286: "1.csv",
                 0.371428571: "1.csv",
             }
-            score_dict = choose_score_dict(
-                dataset_value, "streaming"
-            )
+            score_dict = choose_score_dict(dataset_value, "streaming")
             score_table = streaming_compute_score_table(
                 threshold_file_mapping, token_len, self.alpha,
-                self.coefficients, score_dict
-            )
+                self.coefficients, score_dict)
             disk_score_table = streaming_compute_score_table(
                 disk_threshold_file_mapping, token_len, self.alpha,
-                self.coefficients, score_dict
-            )
+                self.coefficients, score_dict)
         elif self.compression == "mix":
             kivi_threshold_file_mapping = {
-                1.0:   "cpu_1.csv",
+                1.0: "cpu_1.csv",
                 0.728571429: "cpu_06.csv",
                 0.485714286: "cpu_03.csv",
                 0.371428571: "cpu_02.csv",
-                0.0:   "prefill.csv",
+                0.0: "prefill.csv",
             }
             streaming_threshold_file_mapping = {
-                1.0:   "cpu_1.csv",
+                1.0: "cpu_1.csv",
                 0.728571429: "cpu_1.csv",
                 0.485714286: "cpu_1.csv",
                 0.371428571: "cpu_1.csv",
-                0.0:   "prefill.csv",
+                0.0: "prefill.csv",
             }
-            kivi_score_dict = choose_score_dict(
-                dataset_value, "kivi"
-            )
-            streaming_score_dict = choose_score_dict(
-                dataset_value, "streaming"
-            )
-            kivi_score_table = compute_score_table(
-                kivi_threshold_file_mapping, token_len, self.alpha,
-                self.coefficients, kivi_score_dict
-            )
+            kivi_score_dict = choose_score_dict(dataset_value, "kivi")
+            streaming_score_dict = choose_score_dict(dataset_value,
+                                                     "streaming")
+            kivi_score_table = compute_score_table(kivi_threshold_file_mapping,
+                                                   token_len, self.alpha,
+                                                   self.coefficients,
+                                                   kivi_score_dict)
             streaming_score_table = streaming_compute_score_table(
                 streaming_threshold_file_mapping, token_len, self.alpha,
-                self.coefficients, streaming_score_dict
-            )
-            kivi_min_unit_quality_drop = compute_min_unit_quality_drop(kivi_score_table, token_len)
-            streaming_min_unit_quality_drop = compute_min_unit_quality_drop(streaming_score_table, token_len)
+                self.coefficients, streaming_score_dict)
+            kivi_min_unit_quality_drop = compute_min_unit_quality_drop(
+                kivi_score_table, token_len)
+            streaming_min_unit_quality_drop = compute_min_unit_quality_drop(
+                streaming_score_table, token_len)
             # if random.choice([True, False]):
             if kivi_min_unit_quality_drop <= streaming_min_unit_quality_drop:
                 mode = "kivi"
                 score_table = kivi_score_table
                 disk_threshold_file_mapping = {
-                    1.0:   "1.csv",
+                    1.0: "1.csv",
                     0.728571429: "06.csv",
                     0.485714286: "03.csv",
                     0.371428571: "02.csv",
                 }
                 disk_score_table = compute_score_table(
                     disk_threshold_file_mapping, token_len, self.alpha,
-                    self.coefficients, kivi_score_dict
-                )
+                    self.coefficients, kivi_score_dict)
             else:
                 mode = "streaming"
                 score_table = streaming_score_table
                 disk_threshold_file_mapping = {
-                    1.0:   "1.csv",
+                    1.0: "1.csv",
                     0.728571429: "1.csv",
                     0.485714286: "1.csv",
                     0.371428571: "1.csv",
                 }
                 disk_score_table = streaming_compute_score_table(
                     disk_threshold_file_mapping, token_len, self.alpha,
-                    self.coefficients, streaming_score_dict
-                )
-            
+                    self.coefficients, streaming_score_dict)
+
             log_file = self.method_output_csv
             file_exists = os.path.exists(log_file)
             if file_exists:
@@ -361,10 +365,12 @@ class ChunkedTokenDatabase(TokenDatabase):
                 writer.writerow([index_in_dataset, dataset_value, mode])
 
         last_update_ts = time.time()
-        return CacheEngineKey(self.metadata.fmt, self.metadata.model_name,
-                              self.metadata.world_size,
-                              self.metadata.worker_id, chunk_hash,
-                              CacheManagerMetadata(total_hashes, "kivi", 1, 0.0, token_len, score_table, 1, last_update_ts, disk_score_table))
+        return CacheEngineKey(
+            self.metadata.fmt, self.metadata.model_name,
+            self.metadata.world_size, self.metadata.worker_id, chunk_hash,
+            CacheManagerMetadata(total_hashes, "kivi", 1, 0.0, token_len,
+                                 score_table, 1, last_update_ts,
+                                 disk_score_table))
 
     def _get_init_hash(self) -> str:
         return ""
@@ -448,6 +454,5 @@ class ChunkedTokenDatabase(TokenDatabase):
             if start_idx < num_falses:
                 continue
             else:
-                key = self._make_key_by_hash(
-                    hash_val, total_hashes, total_len)
+                key = self._make_key_by_hash(hash_val, total_hashes, total_len)
                 yield start_idx, end_idx, key

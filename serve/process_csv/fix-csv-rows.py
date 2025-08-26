@@ -6,13 +6,13 @@ import sys
 #    (Adjust the regex if your broken lines start with something else.)
 continuation_re = re.compile(r'^\]\s*')
 
-input_path    = '/home/ubuntu/st-prodstack-v/LMCache/serve/results/Jun_19_1_coding/ours/1_old.csv'
-staged_path   = '/home/ubuntu/st-prodstack-v/LMCache/serve/results/Jun_19_1_coding/ours/1-staged.csv'
-output_path   = '/home/ubuntu/st-prodstack-v/LMCache/serve/results/Jun_19_1_coding/ours/1.csv'
+input_path = '/home/ubuntu/st-prodstack-v/LMCache/serve/results/Jun_19_1_coding/ours/1_old.csv'
+staged_path = '/home/ubuntu/st-prodstack-v/LMCache/serve/results/Jun_19_1_coding/ours/1-staged.csv'
+output_path = '/home/ubuntu/st-prodstack-v/LMCache/serve/results/Jun_19_1_coding/ours/1.csv'
 
 with open(input_path,  'r', encoding='utf-8', errors='ignore') as fin, \
      open(staged_path, 'w', encoding='utf-8', newline='') as fout:
-    
+
     prev = None
     for line in fin:
         if continuation_re.match(line):
@@ -27,7 +27,6 @@ with open(input_path,  'r', encoding='utf-8', errors='ignore') as fin, \
     if prev is not None:
         fout.write(prev)
 
-
 # 2) Second pass: normalise to exactly N columns (15 in your case)
 csv.field_size_limit(sys.maxsize)
 
@@ -38,7 +37,7 @@ with open(staged_path,  'r', encoding='utf-8', errors='ignore', newline='') as f
     writer = csv.writer(fout)
 
     # grab header, infer column count
-    header   = next(reader)
+    header = next(reader)
     expected = len(header)
     writer.writerow(header)
 
@@ -48,5 +47,5 @@ with open(staged_path,  'r', encoding='utf-8', errors='ignore', newline='') as f
             row += [''] * (expected - len(row))
         elif len(row) > expected:
             # shove any extra commas into the last field
-            row = row[:expected-1] + [','.join(row[expected-1:])]
+            row = row[:expected - 1] + [','.join(row[expected - 1:])]
         writer.writerow(row)

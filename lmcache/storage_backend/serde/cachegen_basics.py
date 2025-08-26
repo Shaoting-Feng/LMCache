@@ -90,8 +90,7 @@ class CacheGenConfig:
                 # Default name caught by num_hidden_layers
                 if config.num_hidden_layers is None:
                     raise ValueError(
-                        f"num_hidden_layers is None for model {model_name}"
-                    )
+                        f"num_hidden_layers is None for model {model_name}")
                 if config.num_hidden_layers < 10:
                     return CacheGenConfig(
                         nlayers=config.num_hidden_layers,
@@ -114,7 +113,9 @@ class CacheGenConfig:
                     return CacheGenConfig(
                         nlayers=config.num_hidden_layers,
                         kspecs=[
-                            QuantizationSpec(start_layer=0, end_layer=10, bins=32),
+                            QuantizationSpec(start_layer=0,
+                                             end_layer=10,
+                                             bins=32),
                             QuantizationSpec(
                                 start_layer=10,
                                 end_layer=config.num_hidden_layers,
@@ -122,7 +123,9 @@ class CacheGenConfig:
                             ),
                         ],
                         vspecs=[
-                            QuantizationSpec(start_layer=0, end_layer=2, bins=32),
+                            QuantizationSpec(start_layer=0,
+                                             end_layer=2,
+                                             bins=32),
                             QuantizationSpec(
                                 start_layer=2,
                                 end_layer=config.num_hidden_layers,
@@ -200,11 +203,11 @@ class CacheGenGPUEncoderOutput:
             return pickle.load(f)
 
     def debug_print_device(self):
-        logger.debug(f"bytestream device: {self.data_chunks[0].bytestream.device}")
         logger.debug(
-            f"bytestream_lengths device: "
-            f"{self.data_chunks[0].bytestream_lengths.device}"
-        )
+            f"bytestream device: {self.data_chunks[0].bytestream.device}")
+        logger.debug(f"bytestream_lengths device: "
+                     f"{self.data_chunks[0].bytestream_lengths.device}")
         logger.debug(f"cdf device: {self.cdf.device}")
         logger.debug(f"max_tensors_key device: {self.max_tensors_key.device}")
-        logger.debug(f"max_tensors_value device: {self.max_tensors_value.device}")
+        logger.debug(
+            f"max_tensors_value device: {self.max_tensors_value.device}")

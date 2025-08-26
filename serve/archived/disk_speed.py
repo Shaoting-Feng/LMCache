@@ -1,5 +1,6 @@
 import re
 
+
 def average_disk_speed(log_csv_path: str) -> float:
     """
     Reads a CSV (or any text file) containing LMCache INFO lines,
@@ -18,6 +19,7 @@ def average_disk_speed(log_csv_path: str) -> float:
     if not speeds:
         raise ValueError("No disk‑speed entries found in file.")
     return sum(speeds) / len(speeds)
+
 
 if __name__ == "__main__":
     import sys

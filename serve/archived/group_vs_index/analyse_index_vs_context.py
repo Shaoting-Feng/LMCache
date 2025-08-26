@@ -20,4 +20,3 @@ output_file = "grouped_output.csv"  # Change this name or path as desired.
 grouped.to_csv(output_file, index=False)
 
 print(f"\nThe grouped data has been saved to {output_file}.")
-
