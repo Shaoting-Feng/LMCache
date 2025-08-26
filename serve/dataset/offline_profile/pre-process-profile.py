@@ -40,14 +40,14 @@ def process_csv(input_csv: str, output_csv: str) -> None:
     combined = pd.concat([header_df, df], ignore_index=True)
 
     # 4. Add helper fields for sorting: numeric group, header flag
-    combined['group_num'] = combined['id'].apply(lambda v: int(v.split('_')[0]))
-    combined['header_flag'] = combined['id'].apply(lambda v: 0 if v.endswith('_x') else 1)
+    combined['group_num'] = combined['id'].apply(
+        lambda v: int(v.split('_')[0]))
+    combined['header_flag'] = combined['id'].apply(lambda v: 0
+                                                   if v.endswith('_x') else 1)
 
     # 5. Sort by context, then group number, then header_flag
     processed_df = combined.sort_values(
-        by=['context', 'group_num', 'header_flag'],
-        ignore_index=True
-    )
+        by=['context', 'group_num', 'header_flag'], ignore_index=True)
 
     # Drop helper columns
     processed_df = processed_df.drop(columns=['group_num', 'header_flag'])
@@ -59,10 +59,12 @@ def process_csv(input_csv: str, output_csv: str) -> None:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="Process CSV: group rows by three, add headers, sort by context and group."
+        description=
+        "Process CSV: group rows by three, add headers, sort by context and group."
     )
     parser.add_argument('input_csv', help='Path to the input CSV file')
-    parser.add_argument('output_csv', help='Path where the processed CSV will be saved')
+    parser.add_argument('output_csv',
+                        help='Path where the processed CSV will be saved')
     args = parser.parse_args()
 
     process_csv(args.input_csv, args.output_csv)

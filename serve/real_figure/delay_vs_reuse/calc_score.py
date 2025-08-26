@@ -4,26 +4,34 @@ import os
 import sys
 import pandas as pd
 
+
 def compute_avg(filepath):
     """Read CSV, filter occurrence_number==2, return (t_avg, r_avg)."""
     df = pd.read_csv(filepath)
     df2 = df[df['occurrence_number'] == 2]
     if df2.empty:
-        print(f"Warning: no rows with occurrence_number==2 in {filepath}", file=sys.stderr)
+        print(f"Warning: no rows with occurrence_number==2 in {filepath}",
+              file=sys.stderr)
     t_avg = df2['ttft'].mean()
     r_avg = df2['ROUGEL'].mean()
     name = os.path.splitext(os.path.basename(filepath))[0]
     return name, t_avg, r_avg
 
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Compute per-file averages and weighted combos against a baseline CSV.")
+        description=
+        "Compute per-file averages and weighted combos against a baseline CSV."
+    )
     parser.add_argument(
-        'csv_files', nargs='+',
-        help="CSV files to process; first one is baseline, the rest are 'others'")
-    parser.add_argument(
-        '-o', '--output', default='weighted_averages.csv',
-        help="Output CSV file for weighted-average results")
+        'csv_files',
+        nargs='+',
+        help=
+        "CSV files to process; first one is baseline, the rest are 'others'")
+    parser.add_argument('-o',
+                        '--output',
+                        default='weighted_averages.csv',
+                        help="Output CSV file for weighted-average results")
     args = parser.parse_args()
 
     if len(args.csv_files) < 2:
@@ -46,9 +54,9 @@ def main():
         for w in weights:
             records.append({
                 'baseline': baseline,
-                'other':    name,
-                'weight':   w,
-                'weighted_ttft':   (1 - w) * b_t + w * o_t,
+                'other': name,
+                'weight': w,
+                'weighted_ttft': (1 - w) * b_t + w * o_t,
                 'weighted_rougel': (1 - w) * b_r + w * o_r
             })
 
@@ -60,6 +68,7 @@ def main():
     # 4) write out
     out_df.to_csv(args.output, index=False)
     print(f"Wrote {len(records)} rows to: {args.output}")
+
 
 if __name__ == '__main__':
     main()

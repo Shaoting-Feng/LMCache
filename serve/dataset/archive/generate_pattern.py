@@ -5,7 +5,9 @@ import argparse
 import pandas as pd
 import numpy as np
 
-def simulate_polya_urn(n_items: int, sequence_length: int, alpha: float) -> list[int]:
+
+def simulate_polya_urn(n_items: int, sequence_length: int,
+                       alpha: float) -> list[int]:
     """
     用对称 Dirichlet–Multinomial (Pólya Urn) 模型生成索引序列。
     n_items: 数据集中类别数（行数）。
@@ -22,31 +24,33 @@ def simulate_polya_urn(n_items: int, sequence_length: int, alpha: float) -> list
         counts[idx] += 1
     return selected
 
+
 def main():
     parser = argparse.ArgumentParser(
         description="使用对称 Dirichlet–Multinomial (Pólya Urn) 模型，"
-                    "根据输入 CSV 模拟请求序列并输出新的 CSV，同时可复现并报告未被选中的请求数。"
-    )
-    parser.add_argument(
-        "-i", "--input-csv", required=True,
-        help="输入 CSV 文件路径 (包含 title 和约200行数据)。"
-    )
-    parser.add_argument(
-        "-o", "--output-csv", required=True,
-        help="输出 CSV 文件路径。"
-    )
-    parser.add_argument(
-        "-n", "--sequence-length", type=int, required=True,
-        help="要模拟的请求数（序列长度）。"
-    )
-    parser.add_argument(
-        "--alpha", type=float, default=20,
-        help="Dirichlet 浓度参数 α，默认 1.0。"
-    )
-    parser.add_argument(
-        "-s", "--seed", type=int, default=42,
-        help="随机数种子，用于结果可复现（可选）。"
-    )
+        "根据输入 CSV 模拟请求序列并输出新的 CSV，同时可复现并报告未被选中的请求数。")
+    parser.add_argument("-i",
+                        "--input-csv",
+                        required=True,
+                        help="输入 CSV 文件路径 (包含 title 和约200行数据)。")
+    parser.add_argument("-o",
+                        "--output-csv",
+                        required=True,
+                        help="输出 CSV 文件路径。")
+    parser.add_argument("-n",
+                        "--sequence-length",
+                        type=int,
+                        required=True,
+                        help="要模拟的请求数（序列长度）。")
+    parser.add_argument("--alpha",
+                        type=float,
+                        default=20,
+                        help="Dirichlet 浓度参数 α，默认 1.0。")
+    parser.add_argument("-s",
+                        "--seed",
+                        type=int,
+                        default=42,
+                        help="随机数种子，用于结果可复现（可选）。")
     args = parser.parse_args()
 
     # 可复现设置
@@ -75,11 +79,16 @@ def main():
 
     # 输出到新的 CSV
     result_df.to_csv(args.output_csv, index=False)
-    print(f"Simulation complete: wrote {args.sequence_length} rows to {args.output_csv}")
+    print(
+        f"Simulation complete: wrote {args.sequence_length} rows to {args.output_csv}"
+    )
 
     # 统计未被选中的请求数量
     never_selected = set(range(n_items)) - set(indices)
-    print(f"{len(never_selected)} of the {n_items} requests were never selected in the simulation.")
+    print(
+        f"{len(never_selected)} of the {n_items} requests were never selected in the simulation."
+    )
+
 
 if __name__ == "__main__":
     main()

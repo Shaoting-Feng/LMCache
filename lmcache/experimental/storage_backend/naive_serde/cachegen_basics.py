@@ -87,8 +87,7 @@ class CacheGenConfig:
                 # Default name caught by num_hidden_layers
                 if config.num_hidden_layers is None:
                     raise ValueError(
-                        f"num_hidden_layers is None for model {model_name}"
-                    )
+                        f"num_hidden_layers is None for model {model_name}")
                 if config.num_hidden_layers < 10:
                     return CacheGenConfig(
                         nlayers=config.num_hidden_layers,
@@ -111,7 +110,9 @@ class CacheGenConfig:
                     return CacheGenConfig(
                         nlayers=config.num_hidden_layers,
                         kspecs=[
-                            QuantizationSpec(start_layer=0, end_layer=10, bins=32),
+                            QuantizationSpec(start_layer=0,
+                                             end_layer=10,
+                                             bins=32),
                             QuantizationSpec(
                                 start_layer=10,
                                 end_layer=config.num_hidden_layers,
@@ -119,7 +120,9 @@ class CacheGenConfig:
                             ),
                         ],
                         vspecs=[
-                            QuantizationSpec(start_layer=0, end_layer=2, bins=32),
+                            QuantizationSpec(start_layer=0,
+                                             end_layer=2,
+                                             bins=32),
                             QuantizationSpec(
                                 start_layer=2,
                                 end_layer=config.num_hidden_layers,

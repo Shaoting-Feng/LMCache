@@ -39,7 +39,8 @@ def CreateStorageBackends(
         storage_backends[backend_name] = local_disk_backend
 
     if config.remote_disk and config.max_remote_disk_size > 0:
-        remote_disk_backend = RemoteDiskBackend(config, metadata, loop, memory_allocator, dst_device)
+        remote_disk_backend = RemoteDiskBackend(config, metadata, loop,
+                                                memory_allocator, dst_device)
         backend_name = str(remote_disk_backend)
         storage_backends[backend_name] = remote_disk_backend
 

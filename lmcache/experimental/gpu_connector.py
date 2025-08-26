@@ -11,6 +11,7 @@ from lmcache.logging import init_logger
 
 logger = init_logger(__name__)
 
+
 class GPUConnectorInterface(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
@@ -334,9 +335,10 @@ class VLLMPagedMemGPUConnectorV2(GPUConnectorInterface):
                                         slot_mapping[start:end],
                                         kvcaches[0].device,
                                         self.page_buffer_size, False)
-        
+
     @_lmcache_nvtx_annotate
-    def tensor_to_gpu(self, memory_obj: Tensor, start: int, end: int, **kwargs):
+    def tensor_to_gpu(self, memory_obj: Tensor, start: int, end: int,
+                      **kwargs):
 
         if "kvcaches" not in kwargs:
             raise ValueError("'kvcaches' should be provided in kwargs.")
@@ -350,8 +352,7 @@ class VLLMPagedMemGPUConnectorV2(GPUConnectorInterface):
         if not self.pointers_initialized:
             self._initialize_pointers(kvcaches)
 
-        lmc_ops.multi_layer_kv_transfer(memory_obj,
-                                        self.kv_cache_pointers,
+        lmc_ops.multi_layer_kv_transfer(memory_obj, self.kv_cache_pointers,
                                         slot_mapping[start:end],
                                         kvcaches[0].device,
                                         self.page_buffer_size, False)

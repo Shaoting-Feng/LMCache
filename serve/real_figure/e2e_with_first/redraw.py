@@ -14,17 +14,13 @@ file_paths1_ours = [
     '../../results/Jun_4_2_sum/ours/1_processed_updated.csv',
     '../../results/Jun_4_2_sum/ours/10_processed_updated.csv',
 ]
-file_paths1_prefill = [
-    '../../results/Jun_4_2_sum/prefill/0_processed.csv'
-]
+file_paths1_prefill = ['../../results/Jun_4_2_sum/prefill/0_processed.csv']
 file_paths1_streaming = [
     '../../results/Jun_4_2_sum/baseline_streaming/02_processed.csv',
     '../../results/Jun_4_2_sum/baseline_streaming/03_processed.csv',
     '../../results/Jun_4_2_sum/baseline_streaming/06_processed.csv',
 ]
-file_paths1_offload = [
-    '../../results/Jun_4_2_sum/prefill/1_processed.csv'
-]
+file_paths1_offload = ['../../results/Jun_4_2_sum/prefill/1_processed.csv']
 file_paths2_kivi = [
     '../../results/Jun_5_1_qa/baseline_kivi/02_processed.csv',
     '../../results/Jun_5_1_qa/baseline_kivi/03_processed.csv',
@@ -35,17 +31,13 @@ file_paths2_ours = [
     '../../results/Jun_5_1_qa/ours/03_processed_updated.csv',
     '../../results/Jun_5_1_qa/ours/09_processed_updated.csv',
 ]
-file_paths2_prefill = [
-    '../../results/Jun_5_1_qa/prefill/0_processed.csv'
-]
+file_paths2_prefill = ['../../results/Jun_5_1_qa/prefill/0_processed.csv']
 file_paths2_streaming = [
     '../../results/Jun_5_1_qa/baseline_streaming/02_processed.csv',
     '../../results/Jun_5_1_qa/baseline_streaming/03_processed.csv',
     '../../results/Jun_5_1_qa/baseline_streaming/06_processed.csv',
 ]
-file_paths2_offload = [
-    '../../results/Jun_5_1_qa/prefill/1_processed.csv'
-]
+file_paths2_offload = ['../../results/Jun_5_1_qa/prefill/1_processed.csv']
 file_paths3_kivi = [
     '../../results/Jun_19_1_coding/baseline_kivi/02_processed.csv',
     '../../results/Jun_19_1_coding/baseline_kivi/03_processed.csv',
@@ -57,17 +49,13 @@ file_paths3_ours = [
     '../../results/Jun_19_1_coding/ours/1_processed_updated.csv',
     '../../results/Jun_19_1_coding/ours/10_processed_updated.csv',
 ]
-file_paths3_prefill = [
-    '../../results/Jun_19_1_coding/prefill/0_processed.csv'
-]
+file_paths3_prefill = ['../../results/Jun_19_1_coding/prefill/0_processed.csv']
 file_paths3_streaming = [
     '../../results/Jun_19_1_coding/baseline_streaming/02_processed.csv',
     '../../results/Jun_19_1_coding/baseline_streaming/03_processed.csv',
     '../../results/Jun_19_1_coding/baseline_streaming/06_processed.csv',
 ]
-file_paths3_offload = [
-    '../../results/Jun_19_1_coding/prefill/1_processed.csv'
-]
+file_paths3_offload = ['../../results/Jun_19_1_coding/prefill/1_processed.csv']
 subplot_filepaths = [
     {
         "kivi": file_paths1_kivi,
@@ -92,22 +80,18 @@ subplot_filepaths = [
     },
 ]
 subplot_titles = [
-    "Dataset: qmsum & samsum",
-    "Dataset: triviaqa & hotpotqa",
+    "Dataset: qmsum & samsum", "Dataset: triviaqa & hotpotqa",
     "Dataset: lcc_e & repobench_p_e"
 ]
 y_labels = [
-    "Average ROUGE-L Score",
-    "Average F1 Score",
-    "Average CodeBLEU Score"
+    "Average ROUGE-L Score", "Average F1 Score", "Average CodeBLEU Score"
 ]
-methods = [
-    ('Ours', 'ours', 'tab:orange', '^'),
-    ('KIVI LRU', 'kivi', 'tab:blue', 'o'),
-    ('StreamingLLM LRU', 'streaming', 'tab:pink', 's'),
-    ('Prefill', 'prefill', 'tab:green', 'D'),
-    ('Offload', 'offload', 'tab:red', 'X')
-]
+methods = [('Ours', 'ours', 'tab:orange', '^'),
+           ('KIVI LRU', 'kivi', 'tab:blue', 'o'),
+           ('StreamingLLM LRU', 'streaming', 'tab:pink', 's'),
+           ('Prefill', 'prefill', 'tab:green', 'D'),
+           ('Offload', 'offload', 'tab:red', 'X')]
+
 
 def load_metrics_weighted(file_list, w):
     """加权平均 occurrence_number=1 和 =2 的值"""
@@ -131,7 +115,7 @@ def load_metrics_weighted(file_list, w):
         elif np.isnan(a1) and np.isnan(a2):
             ttft_val = np.nan
         else:
-            ttft_val = (1-w) * a1 + w * a2
+            ttft_val = (1 - w) * a1 + w * a2
         if np.isnan(b1) and not np.isnan(b2):
             f1_val = b2
         elif not np.isnan(b1) and np.isnan(b2):
@@ -139,12 +123,14 @@ def load_metrics_weighted(file_list, w):
         elif np.isnan(b1) and np.isnan(b2):
             f1_val = np.nan
         else:
-            f1_val = (1-w) * b1 + w * b2
+            f1_val = (1 - w) * b1 + w * b2
         ttft.append(ttft_val)
         f1.append(f1_val)
     # 把nan的点过滤掉
-    ttft, f1 = zip(*[(x, y) for x, y in zip(ttft, f1) if not (np.isnan(x) or np.isnan(y))])
+    ttft, f1 = zip(*[(x, y) for x, y in zip(ttft, f1)
+                     if not (np.isnan(x) or np.isnan(y))])
     return list(ttft), list(f1)
+
 
 weights = np.arange(0.5, 0.96, 0.05)  # 0.5 ~ 0.95, 步长0.05
 
@@ -156,14 +142,13 @@ for w in weights:
             try:
                 ttft, f1 = load_metrics_weighted(filepaths[key], w)
                 if ttft and f1:
-                    ax.plot(
-                        ttft, f1,
-                        color=color,
-                        marker=marker,
-                        markersize=10,
-                        linewidth=5,
-                        label=label
-                    )
+                    ax.plot(ttft,
+                            f1,
+                            color=color,
+                            marker=marker,
+                            markersize=10,
+                            linewidth=5,
+                            label=label)
             except Exception as e:
                 print(f"Failed {label} subplot {i}: {e}")
         ax.set_xlabel("Average Delay (s)", fontsize=22)
@@ -173,7 +158,13 @@ for w in weights:
         ax.grid(True)
         ax.set_xlim(left=0)
     handles, labels = axs[0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc='upper center', ncol=len(labels), fontsize=20, frameon=False, bbox_to_anchor=(0.5, 1.07))
+    fig.legend(handles,
+               labels,
+               loc='upper center',
+               ncol=len(labels),
+               fontsize=20,
+               frameon=False,
+               bbox_to_anchor=(0.5, 1.07))
     plt.tight_layout(rect=[0, 0, 1, 0.97])
     save_path = f"all_metrics_weight_{w:.2f}.pdf"
     plt.savefig(save_path, dpi=300, bbox_inches="tight")

@@ -60,11 +60,12 @@ class LMCacheEngineConfig:
         method_output_csv: str = "blablabla",
         sliding_window_size: int = 300,
     ) -> "LMCacheEngineConfig":
-        return LMCacheEngineConfig(chunk_size, local_cpu, max_local_cpu_size,
-                                   local_disk, max_local_disk_size, remote_disk, max_remote_disk_size, remote_url,
-                                   remote_serde, save_decode_cache,
-                                   enable_blending, blend_recompute_ratio,
-                                   blend_min_tokens, alpha, policy, rate, compression, dataset_csv, method_output_csv, sliding_window_size)
+        return LMCacheEngineConfig(
+            chunk_size, local_cpu, max_local_cpu_size, local_disk,
+            max_local_disk_size, remote_disk, max_remote_disk_size, remote_url,
+            remote_serde, save_decode_cache, enable_blending,
+            blend_recompute_ratio, blend_min_tokens, alpha, policy, rate,
+            compression, dataset_csv, method_output_csv, sliding_window_size)
 
     @staticmethod
     def from_file(file_path: str) -> "LMCacheEngineConfig":
@@ -124,27 +125,11 @@ class LMCacheEngineConfig:
                 raise ValueError(f"Invalid remote storage url: {remote_url}")
 
         return LMCacheEngineConfig(
-            chunk_size,
-            local_cpu,
-            max_local_cpu_size,
-            local_disk_path,
-            max_local_disk_size,
-            remote_disk_path,
-            max_remote_disk_size,
-            remote_url,
-            remote_serde,
-            save_decode_cache,
-            enable_blending,
-            blend_recompute_ratio,
-            blend_min_tokens,
-            alpha,
-            policy,
-            rate,
-            compression,
-            dataset_csv,
-            method_output_csv,
-            sliding_window_size
-        )
+            chunk_size, local_cpu, max_local_cpu_size, local_disk_path,
+            max_local_disk_size, remote_disk_path, max_remote_disk_size,
+            remote_url, remote_serde, save_decode_cache, enable_blending,
+            blend_recompute_ratio, blend_min_tokens, alpha, policy, rate,
+            compression, dataset_csv, method_output_csv, sliding_window_size)
 
     @staticmethod
     def from_env() -> "LMCacheEngineConfig":
@@ -218,12 +203,14 @@ class LMCacheEngineConfig:
         config.policy = parse_env(get_env_name("policy"), config.policy)
         config.rate = to_float(parse_env(get_env_name("rate"), config.rate))
         config.compression = parse_env(get_env_name("compression"),
-                                        config.compression)
+                                       config.compression)
         config.dataset_csv = parse_env(get_env_name("dataset_csv"),
                                        config.dataset_csv)
         config.method_output_csv = parse_env(get_env_name("method_output_csv"),
-                                              config.method_output_csv)
-        config.sliding_window_size = to_int(parse_env(get_env_name("sliding_window_size"), config.sliding_window_size))
+                                             config.method_output_csv)
+        config.sliding_window_size = to_int(
+            parse_env(get_env_name("sliding_window_size"),
+                      config.sliding_window_size))
         return config
 
     def to_original_config(self) -> orig_config.LMCacheEngineConfig:
@@ -240,5 +227,4 @@ class LMCacheEngineConfig:
             blend_recompute_ratio=self.blend_recompute_ratio,
             blend_min_tokens=self.blend_min_tokens,
             blend_separator="[BLEND_SEP]",
-            blend_add_special_in_precomp=False
-        )
+            blend_add_special_in_precomp=False)

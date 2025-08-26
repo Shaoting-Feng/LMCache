@@ -1,18 +1,22 @@
 import re
 import csv
 import sys
+
 csv.field_size_limit(sys.maxsize)
 # Default reference CSV path
 default_reference_csv = 'dataset/coding_processed_v2.csv'
 
-def extract_token_numbers(input_file, output_csv, reference_csv=default_reference_csv):
+
+def extract_token_numbers(input_file,
+                          output_csv,
+                          reference_csv=default_reference_csv):
     # Patterns
-    token_pattern  = r"Injected token number:\s*(\d+)"
-    rate_pattern   = r", rate:\s*([\d\.]+)"
+    token_pattern = r"Injected token number:\s*(\d+)"
+    rate_pattern = r", rate:\s*([\d\.]+)"
     device_pattern = r"Decompressed memory object from (disk|hot cache)"
 
     records = []
-    current_rates   = []
+    current_rates = []
     current_devices = []
 
     # 1) Parse log input for rates + device context
@@ -41,7 +45,8 @@ def extract_token_numbers(input_file, output_csv, reference_csv=default_referenc
             if tm:
                 token = tm.group(1)
                 # store token, plus the parallel lists of rates/devices
-                records.append((token, current_rates.copy(), current_devices.copy()))
+                records.append(
+                    (token, current_rates.copy(), current_devices.copy()))
                 current_rates.clear()
                 current_devices.clear()
 
@@ -50,11 +55,9 @@ def extract_token_numbers(input_file, output_csv, reference_csv=default_referenc
     with open(reference_csv, newline="") as ref_file:
         reader = csv.DictReader(ref_file)
         for row in reader:
-            reference_rows.append((
-                row.get('length'),
-                row.get('index_in_dataset'),
-                row.get('occurrence_number')
-            ))
+            reference_rows.append(
+                (row.get('length'), row.get('index_in_dataset'),
+                 row.get('occurrence_number')))
 
     if len(reference_rows) != len(records):
         print(f"Warning: reference CSV rows ({len(reference_rows)}) != "
@@ -64,12 +67,8 @@ def extract_token_numbers(input_file, output_csv, reference_csv=default_referenc
     with open(output_csv, "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([
-            "Token Number",
-            "Rates",
-            "length",
-            "index_in_dataset",
-            "occurrence_number",
-            "device"
+            "Token Number", "Rates", "length", "index_in_dataset",
+            "occurrence_number", "device"
         ])
 
         for i, (token, rates, devices) in enumerate(records):
@@ -102,16 +101,11 @@ def extract_token_numbers(input_file, output_csv, reference_csv=default_referenc
             device_str = unique_devs[0] if unique_devs else ''
 
             # reference fields
-            length, idx, occ = reference_rows[i] if i < len(reference_rows) else (None, None, None)
+            length, idx, occ = reference_rows[i] if i < len(
+                reference_rows) else (None, None, None)
 
-            writer.writerow([
-                token,
-                rates_str,
-                length,
-                idx,
-                occ,
-                device_str
-            ])
+            writer.writerow([token, rates_str, length, idx, occ, device_str])
+
 
 if __name__ == "__main__":
     argc = len(sys.argv)
@@ -119,10 +113,15 @@ if __name__ == "__main__":
         input_file, output_csv = sys.argv[1], sys.argv[2]
         reference_csv = default_reference_csv
     elif argc == 4:
-        input_file, reference_csv, output_csv = sys.argv[1], sys.argv[2], sys.argv[3]
+        input_file, reference_csv, output_csv = sys.argv[1], sys.argv[
+            2], sys.argv[3]
     else:
-        print("Usage: python extract_token_numbers.py input_file [reference_csv] output_csv")
+        print(
+            "Usage: python extract_token_numbers.py input_file [reference_csv] output_csv"
+        )
         sys.exit(1)
 
     extract_token_numbers(input_file, output_csv, reference_csv)
-    print(f"Done: extracted tokens and rates using reference '{reference_csv}', wrote to {output_csv}")
+    print(
+        f"Done: extracted tokens and rates using reference '{reference_csv}', wrote to {output_csv}"
+    )

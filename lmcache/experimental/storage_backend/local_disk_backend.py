@@ -9,7 +9,9 @@ import aiofiles
 import torch
 
 from lmcache.experimental.config import LMCacheEngineConfig
-from lmcache.experimental.memory_management import (MemoryAllocatorInterface, MemoryObj, MemoryFormat, BytesBufferMemoryObj)
+from lmcache.experimental.memory_management import (MemoryAllocatorInterface,
+                                                    MemoryObj, MemoryFormat,
+                                                    BytesBufferMemoryObj)
 from lmcache.experimental.storage_backend.abstract_backend import \
     StorageBackendInterface
 from lmcache.experimental.storage_backend.evictor import LRUEvictor, PutStatus
@@ -68,9 +70,10 @@ class LocalDiskBackend(StorageBackendInterface):
         self,
         key: CacheEngineKey,
     ) -> None:
-        
+
         logger.info(f"Manually removing {key} from disk cache.")
-        logger.info(f"Then disk cache size: {self.evictor.current_cache_size} bytes")
+        logger.info(
+            f"Then disk cache size: {self.evictor.current_cache_size} bytes")
 
         path = self.dict[key].path
         self.disk_lock.acquire()
@@ -140,8 +143,7 @@ class LocalDiskBackend(StorageBackendInterface):
         return future
 
     def get_blocking(
-        self,
-        key: CacheEngineKey
+            self, key: CacheEngineKey
     ) -> Tuple[Union[MemoryObj, str], CacheEngineKey]:
         """
         Blocking get function.
@@ -155,7 +157,7 @@ class LocalDiskBackend(StorageBackendInterface):
         if not found:
             self.disk_lock.release()
             return None, key
-        
+
         # Record request pattern
         self.dict[old_key] = self.dict.pop(key)
 
@@ -208,12 +210,13 @@ class LocalDiskBackend(StorageBackendInterface):
         """
         Async load bytearray from disk.
         """
-        memory_obj = self.memory_allocator.allocate(shape, dtype, fmt=MemoryFormat.KV_BLOB2)
+        memory_obj = self.memory_allocator.allocate(shape,
+                                                    dtype,
+                                                    fmt=MemoryFormat.KV_BLOB2)
         if memory_obj is None:
             raise RuntimeError(
                 "Failed to allocate memory for the async disk-retrieved KV cache.\n"
-                "The KV cache will not be stored."
-            )
+                "The KV cache will not be stored.")
         buffer = memory_obj.byte_array
         async with aiofiles.open(path, 'rb') as f:
             await f.readinto(buffer)
@@ -242,13 +245,13 @@ class LocalDiskBackend(StorageBackendInterface):
 
             return path
         else:
-            memory_obj = self.memory_allocator.allocate(shape, dtype, MemoryFormat.KV_BLOB2)
+            memory_obj = self.memory_allocator.allocate(
+                shape, dtype, MemoryFormat.KV_BLOB2)
             if memory_obj is None:
                 raise RuntimeError(
                     "Failed to allocate memory for the sync disk-retrieved KV cache.\n"
-                    "The KV cache will not be stored."
-                )
-            
+                    "The KV cache will not be stored.")
+
             ##### 1
             # buffer = memory_obj.byte_array
             # start = time.perf_counter()
@@ -264,7 +267,7 @@ class LocalDiskBackend(StorageBackendInterface):
             TARGET_RATE = 4 * 1024**3  # 4 GiB/s
 
             fd = os.open(path, os.O_RDONLY | os.O_DIRECT)
-            f  = os.fdopen(fd, 'rb', buffering=0)
+            f = os.fdopen(fd, 'rb', buffering=0)
 
             while True:
                 t0 = time.perf_counter()

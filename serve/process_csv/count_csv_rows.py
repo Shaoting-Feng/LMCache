@@ -5,6 +5,7 @@ import sys
 
 csv.field_size_limit(sys.maxsize)
 
+
 def count_rows(csv_path: str, has_header: bool = True) -> int:
     """
     Count the number of rows in a CSV file.
@@ -26,23 +27,19 @@ def count_rows(csv_path: str, has_header: bool = True) -> int:
 
     return total - 1 if has_header and total > 0 else total
 
+
 def main():
     parser = argparse.ArgumentParser(
-        description="Count the number of rows in a CSV file."
-    )
-    parser.add_argument(
-        "csv_file",
-        help="Path to the CSV file to be counted."
-    )
-    parser.add_argument(
-        "--no-header",
-        action="store_true",
-        help="Treat the file as having no header row."
-    )
+        description="Count the number of rows in a CSV file.")
+    parser.add_argument("csv_file", help="Path to the CSV file to be counted.")
+    parser.add_argument("--no-header",
+                        action="store_true",
+                        help="Treat the file as having no header row.")
     args = parser.parse_args()
 
     count = count_rows(args.csv_file, has_header=not args.no_header)
     print(count)
+
 
 if __name__ == "__main__":
     main()

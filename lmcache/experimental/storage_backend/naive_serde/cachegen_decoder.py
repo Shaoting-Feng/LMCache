@@ -9,8 +9,7 @@ import torch
 from lmcache.config import LMCacheEngineMetadata
 from lmcache.logging import init_logger
 from lmcache.storage_backend.serde.cachegen_basics import (
-    CacheGenGPUEncoderOutput,
-)
+    CacheGenGPUEncoderOutput, )
 from lmcache.storage_backend.serde.cachegen_decoder import (
     decode_function_gpu,
     do_dequantize,
@@ -31,9 +30,12 @@ logger = init_logger(__name__)
 
 
 class CacheGenDeserializer(Deserializer):
-    def __init__(self, config: LMCacheEngineConfig, metadata: LMCacheEngineMetadata):
+
+    def __init__(self, config: LMCacheEngineConfig,
+                 metadata: LMCacheEngineMetadata):
         self.dtype = metadata.kv_dtype
-        self.cachegen_config = CacheGenConfig.from_model_name(metadata.model_name)
+        self.cachegen_config = CacheGenConfig.from_model_name(
+            metadata.model_name)
         self.chunk_size = config.chunk_size
         self.output_buffer: Optional[torch.Tensor] = None
         self.fmt = metadata.fmt
@@ -43,36 +45,34 @@ class CacheGenDeserializer(Deserializer):
     def make_key_bins(self, config: CacheGenConfig) -> torch.Tensor:
         ret = torch.zeros(config.nlayers)
         for spec in config.kspecs:
-            ret[spec.start_layer : spec.end_layer] = spec.bins
+            ret[spec.start_layer:spec.end_layer] = spec.bins
         return ret.cuda()
 
     def make_value_bins(self, config: CacheGenConfig) -> torch.Tensor:
         ret = torch.zeros(config.nlayers)
         for spec in config.vspecs:
-            ret[spec.start_layer : spec.end_layer] = spec.bins
+            ret[spec.start_layer:spec.end_layer] = spec.bins
         return ret.cuda()
 
     def get_output_buffer(self, nlayers: int, nchannels: int, ntokens: int):
-        if (
-            self.output_buffer is None
-            or self.output_buffer.shape[1] != 2 * nlayers * nchannels
-        ):
+        if (self.output_buffer is None
+                or self.output_buffer.shape[1] != 2 * nlayers * nchannels):
             self.output_buffer = torch.zeros(
-                (self.chunk_size, 2 * nlayers * nchannels), dtype=torch.uint8
-            ).cuda()
+                (self.chunk_size, 2 * nlayers * nchannels),
+                dtype=torch.uint8).cuda()
         return self.output_buffer[:ntokens, :]
 
     # TODO(Jiayi): A lot of memory copies can be avoided in this function.
     @_lmcache_nvtx_annotate
     def deserialize(
-        self, buffer_memory_obj: BytesBufferMemoryObj
-    ) -> Optional[MemoryObj]:
+            self,
+            buffer_memory_obj: BytesBufferMemoryObj) -> Optional[MemoryObj]:
         encoder_output = CacheGenGPUEncoderOutput.from_bytes(
-            buffer_memory_obj.byte_array
-        )
+            buffer_memory_obj.byte_array)
 
         encoder_output.max_tensors_key = encoder_output.max_tensors_key.cuda()
-        encoder_output.max_tensors_value = encoder_output.max_tensors_value.cuda()
+        encoder_output.max_tensors_value = encoder_output.max_tensors_value.cuda(
+        )
 
         ntokens = encoder_output.max_tensors_key.shape[1]
         layers_in_key = encoder_output.max_tensors_key.shape[0]
@@ -103,25 +103,23 @@ class CacheGenDeserializer(Deserializer):
             self.value_bins = self.value_bins.cuda()
 
         key = do_dequantize(key, self.key_bins, encoder_output.max_tensors_key)
-        value = do_dequantize(value, self.value_bins, encoder_output.max_tensors_value)
+        value = do_dequantize(value, self.value_bins,
+                              encoder_output.max_tensors_value)
         """ merge key and value back and reshape """
         nlayers, ntokens, nchannels = key.shape
         blob = torch.stack([key, value])  # [2, nlayers, ntokens, nchannels]
-        blob = blob.reshape(
-            (
-                2,
-                nlayers,
-                ntokens,
-                encoder_output.num_heads,
-                encoder_output.head_size,
-            )
-        )
+        blob = blob.reshape((
+            2,
+            nlayers,
+            ntokens,
+            encoder_output.num_heads,
+            encoder_output.head_size,
+        ))
         match self.fmt:
             case "vllm":
                 hidden_dim = blob.shape[-1] * blob.shape[-2]
                 kv_chunk = blob.reshape(*blob.shape[:-2], hidden_dim).to(
-                    self.dtype
-                )  # [nlayers, 2, ntokens, num_heads, head_size]
+                    self.dtype)  # [nlayers, 2, ntokens, num_heads, head_size]
             case _:
                 raise RuntimeError("Unknown format %s" % self.fmt)
 

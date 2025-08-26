@@ -24,7 +24,9 @@ class Serializer(metaclass=abc.ABCMeta):
 class Deserializer(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def deserialize(self, memory_obj: Union[MemoryObj, str]) -> Optional[Union[MemoryObj, Tensor]]:
+    def deserialize(
+        self, memory_obj: Union[MemoryObj,
+                                str]) -> Optional[Union[MemoryObj, Tensor]]:
         """
         Deserialize/decompress the memory object.
 

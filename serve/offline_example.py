@@ -53,8 +53,7 @@ llm = LLM(model="meta-llama/Llama-3.1-8b-Instruct",
           max_model_len=30000,
           enable_chunked_prefill=False,
           gpu_memory_utilization=0.8,
-          enforce_eager=True
-          )
+          enforce_eager=True)
 
 for i in range(2):
     outputs = llm.generate(first_prompt, sampling_params)

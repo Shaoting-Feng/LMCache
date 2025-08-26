@@ -67,13 +67,15 @@ class UserConfig:
     enable_user_id: bool
 
     @staticmethod
-    def new_user_config(user_id: int, workload_config: WorkloadConfig) -> "UserConfig":
+    def new_user_config(user_id: int,
+                        workload_config: WorkloadConfig) -> "UserConfig":
         return UserConfig(
             user_id=user_id,
             system_prompt_len=workload_config.system_prompt_len,
             user_info_len=workload_config.user_info_len,
             answer_len=workload_config.answer_len,
-            gap_between_requests=workload_config.num_users / workload_config.qps,
+            gap_between_requests=workload_config.num_users /
+            workload_config.qps,
             num_rounds=workload_config.num_rounds,
             enable_user_id=workload_config.enable_user_id,
         )
@@ -81,16 +83,15 @@ class UserConfig:
 
 class ChatHistory:
 
-    def __init__(
-        self,
-    ):
+    def __init__(self, ):
         self.history = []
 
     def on_user_query(self, query: str):
         if len(self.history) == 0:
             self.history.append({"role": "user", "content": query})
         else:
-            assert self.history[-1]["role"] == "assistant", "Expect system response"
+            assert self.history[-1][
+                "role"] == "assistant", "Expect system response"
             self.history.append({"role": "user", "content": query})
 
     def on_system_response(self, response: str):
@@ -122,22 +123,28 @@ class RequestExecutor:
         # Ensure base_url ends with /v1
         if not base_url.endswith('/v1'):
             base_url = base_url.rstrip('/') + '/v1'
-        
+
         # For vLLM server, we don't need an API key, but the client requires one
         self.client = openai.AsyncOpenAI(
             api_key="EMPTY",  # Dummy API key for vLLM server
-            base_url=base_url
-        )
+            base_url=base_url)
         self.model = model
-        logging.info(f"Initialized OpenAI client with base_url={base_url} and model={model}")
+        logging.info(
+            f"Initialized OpenAI client with base_url={base_url} and model={model}"
+        )
         self.loop = AsyncLoopWrapper.GetOrStartLoop()
         self.request_history = []
 
-    async def _async_launch_request(self, messages: List[Dict[str, str]],  max_tokens: int, 
-                                    extra_headers: Optional[Dict[str, str]] = None):
+    async def _async_launch_request(self,
+                                    messages: List[Dict[str, str]],
+                                    max_tokens: int,
+                                    extra_headers: Optional[Dict[str,
+                                                                 str]] = None):
         try:
-            logging.info(f"Sending request to model {self.model} with messages: {messages}")
-            
+            logging.info(
+                f"Sending request to model {self.model} with messages: {messages}"
+            )
+
             # Initialize response tracking variables
             words = ""
             tokens_out = 0
@@ -146,8 +153,9 @@ class RequestExecutor:
             first_token_time = None
 
             # Check if we should use chat completions API
-            use_chat_completions = os.environ.get("USE_CHAT_COMPLETIONS", "False").lower() == "true"
-            
+            use_chat_completions = os.environ.get("USE_CHAT_COMPLETIONS",
+                                                  "False").lower() == "true"
+
             if use_chat_completions:
                 # Use chat.completions API
                 response = await self.client.chat.completions.create(
@@ -164,17 +172,21 @@ class RequestExecutor:
                 async for chunk in response:
                     if not chunk.choices:
                         continue
-                        
+
                     # Handle content
                     if chunk.choices[0].delta.content is not None:
-                        if first_token_time is None and chunk.choices[0].delta.content != "":
+                        if first_token_time is None and chunk.choices[
+                                0].delta.content != "":
                             first_token_time = time.time()
                         words += chunk.choices[0].delta.content
             else:
                 # Use completions API
                 # Convert messages to a prompt string
-                prompt = "\n".join([f"{msg['role'].upper()}: {msg['content']}" for msg in messages])
-                
+                prompt = "\n".join([
+                    f"{msg['role'].upper()}: {msg['content']}"
+                    for msg in messages
+                ])
+
                 response = await self.client.completions.create(
                     model=self.model,
                     prompt=prompt,
@@ -184,18 +196,18 @@ class RequestExecutor:
                     stream_options={"include_usage": True},
                     extra_headers=extra_headers,
                 )
-                
+
                 # Process the streaming response
                 async for chunk in response:
                     if not chunk.choices:
                         continue
-                        
+
                     # Handle content
                     if chunk.choices[0].text:
                         if first_token_time is None:
                             first_token_time = time.time()
                         words += chunk.choices[0].text
-            
+
             # Handle token counts if available
             if hasattr(chunk, 'usage') and chunk.usage is not None:
                 tokens_out = chunk.usage.completion_tokens
@@ -213,22 +225,28 @@ class RequestExecutor:
                             stream=False,
                         )
                     else:
-                        prompt = "\n".join([f"{msg['role'].upper()}: {msg['content']}" for msg in messages])
+                        prompt = "\n".join([
+                            f"{msg['role'].upper()}: {msg['content']}"
+                            for msg in messages
+                        ])
                         final_response = await self.client.completions.create(
                             model=self.model,
                             prompt=prompt,
                             stream=False,
                         )
-                        
-                    if hasattr(final_response, 'usage') and final_response.usage is not None:
+
+                    if hasattr(final_response,
+                               'usage') and final_response.usage is not None:
                         tokens_out = final_response.usage.completion_tokens
                         tokens_prefill = final_response.usage.prompt_tokens
                 except Exception as e:
-                    logging.warning(f"Failed to get token counts from final response: {e}")
+                    logging.warning(
+                        f"Failed to get token counts from final response: {e}")
 
             # # Calculate timing metrics
             ttft = first_token_time - start_time if first_token_time else 0
-            generation_time = time.time() - first_token_time if first_token_time else 0
+            generation_time = time.time(
+            ) - first_token_time if first_token_time else 0
 
             return Response(
                 body=words,
@@ -242,7 +260,8 @@ class RequestExecutor:
 
         except Exception as e:
             logging.error(f"Error in _async_launch_request: {str(e)}")
-            logging.error(f"Request details - model: {self.model}, messages: {messages}")
+            logging.error(
+                f"Request details - model: {self.model}, messages: {messages}")
             raise
 
     def launch_request(
@@ -258,14 +277,17 @@ class RequestExecutor:
         messages = chat_history.get_messages_for_openai()
         real_callback = lambda x: finish_callback(x.result())
         future = asyncio.run_coroutine_threadsafe(
-            self._async_launch_request(messages, max_tokens, extra_headers), self.loop
-        )
+            self._async_launch_request(messages, max_tokens, extra_headers),
+            self.loop)
         future.add_done_callback(real_callback)
 
 
 class UserSession:
 
-    def __init__(self, user_config: UserConfig, use_sharegpt=False, sharegpt_data=None):
+    def __init__(self,
+                 user_config: UserConfig,
+                 use_sharegpt=False,
+                 sharegpt_data=None):
         self.user_config = user_config
         self.last_request_time = None
         self.chat_history = ChatHistory()
@@ -305,30 +327,26 @@ class UserSession:
 
         dummy_text_sys = gen_dummy_text(self.user_config.system_prompt_len)
         dummy_text_user = gen_dummy_text(self.user_config.user_info_len)
-        system_prompt = (
-            f"Hi, here's some system prompt: {dummy_text_sys}."
-            + f"For user {self.user_config.user_id}, "
-            + f"here are some other context: {dummy_text_user}."
-        )
+        system_prompt = (f"Hi, here's some system prompt: {dummy_text_sys}." +
+                         f"For user {self.user_config.user_id}, " +
+                         f"here are some other context: {dummy_text_user}.")
         return system_prompt
 
     def _build_new_question(self):
         self.question_id += 1
-        return (
-            f"Here's question #{self.question_id}: can you tell me "
-            + "a new long story with a happy ending?"
-        )
+        return (f"Here's question #{self.question_id}: can you tell me " +
+                "a new long story with a happy ending?")
 
-    def _launch_new_request(self, timestamp: float, request_executor: RequestExecutor):
+    def _launch_new_request(self, timestamp: float,
+                            request_executor: RequestExecutor):
         if self.use_sharegpt:
             if self.start_with_gpt:
-                prompt = self.sharegpt_data["conversations"][2 * self.question_id + 1][
-                    "value"
-                ]
+                prompt = self.sharegpt_data["conversations"][2 *
+                                                             self.question_id +
+                                                             1]["value"]
             else:
-                prompt = self.sharegpt_data["conversations"][2 * self.question_id][
-                    "value"
-                ]
+                prompt = self.sharegpt_data["conversations"][
+                    2 * self.question_id]["value"]
             self.question_id += 1
         else:
             prompt = self._build_new_question()
@@ -340,13 +358,11 @@ class UserSession:
         )
         if self.use_sharegpt:
             if self.start_with_gpt:
-                max_tokens = self.sharegpt_data["conversations"][2 * self.question_id][
-                    "num_tokens"
-                ]
+                max_tokens = self.sharegpt_data["conversations"][
+                    2 * self.question_id]["num_tokens"]
             else:
                 max_tokens = self.sharegpt_data["conversations"][
-                    2 * self.question_id - 1
-                ]["num_tokens"]
+                    2 * self.question_id - 1]["num_tokens"]
             max_tokens = min(max_tokens, self.user_config.answer_len)
         else:
             max_tokens = self.user_config.answer_len
@@ -362,36 +378,32 @@ class UserSession:
     def _on_request_finished(self, response: Response):
         self.chat_history.on_system_response(response.body)
         self.has_unfinished_request = False
-        logger.debug(
-            f"User {self.user_config.user_id} finished one request. "
-            f"Prompt tokens: {response.prompt_tokens}, "
-            f"generation tokens: {response.generation_tokens}"
-        )
+        logger.debug(f"User {self.user_config.user_id} finished one request. "
+                     f"Prompt tokens: {response.prompt_tokens}, "
+                     f"generation tokens: {response.generation_tokens}")
         self._update_result(response)
 
     def set_internal_state(self, offset: float, timestamp: float):
         """Tell the session is the 'offset' seconds after the start"""
-        assert len(self.chat_history) == 0, (
-            "Internal state should be set " "before the first request"
-        )
+        assert len(self.chat_history) == 0, ("Internal state should be set "
+                                             "before the first request")
 
-        num_passed_questions = int(offset / self.user_config.gap_between_requests) + 1
+        num_passed_questions = int(
+            offset / self.user_config.gap_between_requests) + 1
 
-        passed_time = (num_passed_questions - 1) * self.user_config.gap_between_requests
+        passed_time = (num_passed_questions -
+                       1) * self.user_config.gap_between_requests
 
         self.last_request_time = timestamp - offset + passed_time
         self.question_id = num_passed_questions
         logger.debug(
             f"Set internal state for user {self.user_config.user_id}, "
             f"question_id: {self.question_id}, "
-            f"last_request_time: {self.last_request_time}"
-        )
+            f"last_request_time: {self.last_request_time}")
 
     def step(self, timestamp: float, request_executor: RequestExecutor):
-        if (
-            self.question_id >= self.user_config.num_rounds
-            and not self.has_unfinished_request
-        ):
+        if (self.question_id >= self.user_config.num_rounds
+                and not self.has_unfinished_request):
             self.finished = True
             return
 
@@ -404,8 +416,7 @@ class UserSession:
                 if timestamp - self.last_unfinished_log > 10:
                     logger.warning(
                         f"User {self.user_config.user_id} has an unfinished "
-                        "request and unable to fit the QPS requirement."
-                    )
+                        "request and unable to fit the QPS requirement.")
                     self.last_unfinished_log = timestamp
                 return
 
@@ -427,24 +438,24 @@ class UserSession:
 
 class UserSessionManager:
 
-    def __init__(
-        self, workload_config: WorkloadConfig, init_user_id=0, use_sharegpt=False
-    ):
+    def __init__(self,
+                 workload_config: WorkloadConfig,
+                 init_user_id=0,
+                 use_sharegpt=False):
         self.workload_config = workload_config
         self.sessions = []
 
         gap_between_requests_per_user = workload_config.num_users / workload_config.qps
         session_alive_time = gap_between_requests_per_user * (
-            workload_config.num_rounds - 1
-        )
-        self.gap_between_users = session_alive_time / (workload_config.num_users + 0)
+            workload_config.num_rounds - 1)
+        self.gap_between_users = session_alive_time / (
+            workload_config.num_users + 0)
         self.ramp_up_time = workload_config.num_users * self.gap_between_users
 
         logger.info(
             f"Gap between users: {self.gap_between_users} secs.\n"
             f"Gap between user reqs: {gap_between_requests_per_user} secs.\n"
-            f"Expected length of user session: {session_alive_time} secs."
-        )
+            f"Expected length of user session: {session_alive_time} secs.")
 
         self.user_id = init_user_id
         self.last_user_join = 0
@@ -461,8 +472,7 @@ class UserSessionManager:
         with open("ShareGPT.json", "r", encoding="utf-8") as file:
             self.sharegpt_data = json.load(file)
         self.sharegpt_data = [
-            d
-            for d in self.sharegpt_data
+            d for d in self.sharegpt_data
             if d["num_round"] > 2 * self.workload_config.num_rounds
         ]
         logger.info(f"There are {len(self.sharegpt_data)} users satisfying ")
@@ -478,11 +488,11 @@ class UserSessionManager:
 
     def _create_user_session(self):
         self.user_id += 1
-        user_config = UserConfig.new_user_config(self.user_id, self.workload_config)
+        user_config = UserConfig.new_user_config(self.user_id,
+                                                 self.workload_config)
         if self.use_sharegpt:
-            user_session = UserSession(
-                user_config, self.use_sharegpt, self.sharegpt_data[self.user_id]
-            )
+            user_session = UserSession(user_config, self.use_sharegpt,
+                                       self.sharegpt_data[self.user_id])
         else:
             user_session = UserSession(user_config, self.use_sharegpt)
         self.sessions.append(user_session)
@@ -510,10 +520,8 @@ class UserSessionManager:
             new_session = self._create_user_session()
             if new_session is not None:
                 self.last_user_join = timestamp
-                logger.info(
-                    f"Joined a new user {self.user_id}, "
-                    f"now active users: {len(self.sessions)}"
-                )
+                logger.info(f"Joined a new user {self.user_id}, "
+                            f"now active users: {len(self.sessions)}")
 
         for session in self.sessions:
             session.step(timestamp, executor)
@@ -530,17 +538,14 @@ class UserSessionManager:
     ):
         if start_time and end_time:
             launched_queries = len(
-                df.query(f"{start_time} <= launch_time <= {end_time}")
-            )
+                df.query(f"{start_time} <= launch_time <= {end_time}"))
             df = df.query(f"{start_time} <= finish_time <= {end_time}")
         else:
             launched_queries = len(df)
 
-        logger.debug(
-            f"Launched queries: {launched_queries}, "
-            f"pending queries: {pending_queries}, "
-            f"finished queries: {len(df)}"
-        )
+        logger.debug(f"Launched queries: {launched_queries}, "
+                     f"pending queries: {pending_queries}, "
+                     f"finished queries: {len(df)}")
 
         if qps is None:
             qps = 0.0
@@ -561,43 +566,36 @@ class UserSessionManager:
         total_generation_tokens = df["generation_tokens"].sum()
         average_prefill_speed = total_prompt_tokens / total_time
         average_generation_speed = total_generation_tokens / total_time
-        average_generation_speed_per_request = (
-            df["generation_tokens"] / df["generation_time"]
-        ).mean()
+        average_generation_speed_per_request = (df["generation_tokens"] /
+                                                df["generation_time"]).mean()
         average_ttft = df["ttft"].mean()
         logger.info("Calculating performance summary")
         print("\n")
-        print("==================== Performance summary ======================")
+        print(
+            "==================== Performance summary ======================")
         print(f"  \033[33mQPS: \033[32m{qps:.4f} reqs/s\033[0m\n")
 
-        print(
-            f"  \033[33mProcessing speed: "
-            f"\033[32m{finished_qps:.4f} reqs/s\033[0m\n"
-        )
+        print(f"  \033[33mProcessing speed: "
+              f"\033[32m{finished_qps:.4f} reqs/s\033[0m\n")
 
         print(f"  \033[33mRequests on-the-fly: {pending_queries}\033[0m\n")
 
-        print(
-            "  \033[33mInput tokens per second: "
-            f"\033[32m{average_prefill_speed:.4f} tokens/s\033[0m\n"
-        )
+        print("  \033[33mInput tokens per second: "
+              f"\033[32m{average_prefill_speed:.4f} tokens/s\033[0m\n")
 
-        print(
-            "  \033[33mOutput tokens per second: "
-            f"\033[32m{average_generation_speed:.4f} tokens/s\033[0m\n"
-        )
+        print("  \033[33mOutput tokens per second: "
+              f"\033[32m{average_generation_speed:.4f} tokens/s\033[0m\n")
 
-        print(
-            "  \033[33mAverage generation throughput (per request): "
-            f"\033[32m{average_generation_speed_per_request:.4f} "
-            "tokens/req/s\033[0m\n"
-        )
+        print("  \033[33mAverage generation throughput (per request): "
+              f"\033[32m{average_generation_speed_per_request:.4f} "
+              "tokens/req/s\033[0m\n")
 
         print(f"  \033[33mAverage TTFT: \033[32m{average_ttft:.4f}s\033[0m\n")
 
         print(f"Time range: {start_time} - {end_time} ({total_time:.2f}s)")
 
-        print("===============================================================")
+        print(
+            "===============================================================")
         print("\n")
         return df
 
@@ -605,17 +603,16 @@ class UserSessionManager:
         if len(self.session_summaries) == 0 and len(self.sessions) == 0:
             return pd.DataFrame()
 
-        df = pd.concat(
-            [s for s in self.session_summaries] + [s.summary() for s in self.sessions]
-        )
-        pending_queries = len([s for s in self.sessions if s.has_unfinished_request])
+        df = pd.concat([s for s in self.session_summaries] +
+                       [s.summary() for s in self.sessions])
+        pending_queries = len(
+            [s for s in self.sessions if s.has_unfinished_request])
         start_time = max(self.start_time, start_time)
         end_time = min(end_time, df["finish_time"].max())
         qps = self.workload_config.qps
 
-        df = UserSessionManager.ProcessSummary(
-            df, start_time, end_time, pending_queries, qps
-        )
+        df = UserSessionManager.ProcessSummary(df, start_time, end_time,
+                                               pending_queries, qps)
         return df
 
 
@@ -624,15 +621,15 @@ def warmup_engine(executor):
     for i in range(10):
         chat_history = ChatHistory()
         chat_history.on_user_query(
-            f"WARMUP: Hi, I'm user {i}. Here are some text: {'hi ' * 100}."
-        )
+            f"WARMUP: Hi, I'm user {i}. Here are some text: {'hi ' * 100}.")
         executor.launch_request(chat_history, 100, lambda x: None)
 
     AsyncLoopWrapper.WaitLoop()
 
 
 def parse_arguments() -> WorkloadConfig:
-    parser = argparse.ArgumentParser(description="Parse benchmark configurations.")
+    parser = argparse.ArgumentParser(
+        description="Parse benchmark configurations.")
 
     parser.add_argument(
         "--num-users",
@@ -685,9 +682,10 @@ def parse_arguments() -> WorkloadConfig:
         help="The output file name (ended with csv or txt) "
         "for the summary csv and txt",
     )
-    parser.add_argument(
-        "--init-user-id", type=int, default=0, help="The initial user id to start with"
-    )
+    parser.add_argument("--init-user-id",
+                        type=int,
+                        default=0,
+                        help="The initial user id to start with")
     parser.add_argument(
         "--request-with-user-id",
         action="store_true",
@@ -700,17 +698,16 @@ def parse_arguments() -> WorkloadConfig:
         default=30,
         help="The time between two summary loggings in seconds",
     )
-    parser.add_argument(
-        "--sharegpt", action="store_true", help="Whether to use ShareGPT dataset"
-    )
+    parser.add_argument("--sharegpt",
+                        action="store_true",
+                        help="Whether to use ShareGPT dataset")
     args = parser.parse_args()
     return args
 
 
 def parse_process_summary():
     parser = argparse.ArgumentParser(
-        description="Parse benchmark configurations.", add_help=False
-    )
+        description="Parse benchmark configurations.", add_help=False)
 
     parser.add_argument("--process-summary", type=str, default=None)
 
@@ -719,10 +716,8 @@ def parse_process_summary():
 
 
 def process_output(filename):
-    logger.warning(
-        f"Processing the existing summary file {filename}"
-        ", ignoring all the other arguments"
-    )
+    logger.warning(f"Processing the existing summary file {filename}"
+                   ", ignoring all the other arguments")
     UserSessionManager.ProcessSummary(pd.read_csv(filename), pending_queries=0)
 
 
@@ -735,9 +730,7 @@ def main():
     args = parse_arguments()
     step_interval = 0.1
 
-    executor = RequestExecutor(
-        base_url=args.base_url, model=args.model
-    )
+    executor = RequestExecutor(base_url=args.base_url, model=args.model)
 
     warmup_engine(executor)
     workload_config = WorkloadConfig(
@@ -751,9 +744,9 @@ def main():
         enable_user_id=args.request_with_user_id,
     )
 
-    manager = UserSessionManager(
-        workload_config, init_user_id=args.init_user_id, use_sharegpt=args.sharegpt
-    )
+    manager = UserSessionManager(workload_config,
+                                 init_user_id=args.init_user_id,
+                                 use_sharegpt=args.sharegpt)
 
     num_steps = 0
     start_time = time.time()
