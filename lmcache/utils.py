@@ -33,14 +33,15 @@ TORCH_DTYPE_TO_STR_DTYPE = {
 
 @dataclass
 class CacheManagerMetadata:
-    context_id: List[str]
-    method: List[str] # NOTE(Shaoting): If one chunk have different method, choose the first one. Method here is pre-chosen by offline profiling.
+    context_id: str
+    method: str
     rate: float
     length: float # real-time chunk bytes size
     num_tokens: int # number of all tokens in a context
-    score_table: List[List[Tuple[float, float]]] # a list of score tables for each context, each table is a list of (rate, score) pairs
-    emerge_id: List[int]
-    disk_score_table: List[List[Tuple[float, float]]] # a list of score tables for each context, each table is a list of (rate, score) pairs
+    score_table: List[Tuple[float, float]] # a list of (rate, score) pairs
+    frequency_score: float
+    last_update_ts: float
+    disk_score_table: List[Tuple[float, float]] # a list of (rate, score) pairs
 
 @dataclass(order=True)
 class CacheEngineKey:
@@ -81,7 +82,7 @@ class CacheEngineKey:
         if len(parts) != 5:
             raise ValueError(f"Invalid key string: {s}")
         return CacheEngineKey(parts[0], parts[1], int(parts[2]), int(parts[3]),
-                              parts[4], CacheManagerMetadata([], [], 0.0, 0.0, 0, [], [], []))
+                              parts[4], CacheManagerMetadata(None, None, 0, 0, 0, [], 0, 0, []))
 
 
 ##### NVTX annotation #####
