@@ -197,7 +197,10 @@ def choose_score_dict(
         score06 = 0.38142414825154264
         score1 = 0.9137121644961942
     else:
-        raise ValueError(f"Unsupported dataset {dataset} and compression method {compression_method}.")
+        score02 = 0
+        score03 = 0
+        score06 = 0
+        score1 = 0
     return {
         1.0: 1 - score1,
         0.728571429: 1 - score06,
@@ -450,5 +453,5 @@ class ChunkedTokenDatabase(TokenDatabase):
                 continue
             else:
                 key, occurrence = self._make_key_by_hash(
-                    hash_val, total_hashes, total_len, id)
+                    hash_val, total_hashes, total_len, 0)
                 yield start_idx, end_idx, key, occurrence

@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-compression = np.array([0.0, 0.2, 0.4, 0.6, 0.8, 0.9])
+plt.rcParams['font.family'] = ['DejaVu Sans']
+
+compression = np.array([1.0, 0.8, 0.6, 0.4, 0.2, 0.1])
 xvals = 1 - compression
 
 # 数据
@@ -24,9 +26,9 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 xtick_vals = np.array([1.0, 0.8, 0.6, 0.4, 0.2])
 xtick_vals = np.sort(xtick_vals)[::-1]  # 保持递减
 
-axes[0].plot(xvals, streaming_a, marker='o', color='tab:blue', markersize=12, linewidth=5, label='StreamingLLMPress')
-axes[0].plot(xvals, expected_a, marker='^', color='tab:orange', markersize=12, linewidth=5, label='ExpectedAttentionPress')
-axes[0].plot(xvals, snap_a, marker='D', color='tab:green', markersize=12, linewidth=5, label='SnapKVPress')
+axes[0].plot(xvals, streaming_a, marker='o', color='tab:blue', markersize=12, linewidth=5, label='StreamingLLM')
+axes[0].plot(xvals, expected_a, marker='^', color='tab:orange', markersize=12, linewidth=5, label='ExpectedAttention')
+axes[0].plot(xvals, snap_a, marker='D', color='tab:green', markersize=12, linewidth=5, label='SnapKV')
 axes[0].set_title('Sample Index 23', fontsize=title_fontsize)
 axes[0].set_xlabel('Compression Ratio', fontsize=label_fontsize)
 axes[0].set_ylabel('Evaluation Score', fontsize=label_fontsize)
@@ -34,16 +36,18 @@ axes[0].set_xticks(xtick_vals)
 axes[0].set_xticklabels([f"{x:.1f}" for x in xtick_vals], fontsize=tick_fontsize)
 axes[0].tick_params(axis='y', labelsize=tick_fontsize)
 axes[0].grid(True)
+axes[0].set_xlim(left=0)
 
-axes[1].plot(xvals, streaming_b, marker='o', color='tab:blue', markersize=12, linewidth=5, label='StreamingLLMPress')
-axes[1].plot(xvals, expected_b, marker='^', color='tab:orange', markersize=12, linewidth=5, label='ExpectedAttentionPress')
-axes[1].plot(xvals, snap_b, marker='D', color='tab:green', markersize=12, linewidth=5, label='SnapKVPress')
+axes[1].plot(xvals, streaming_b, marker='o', color='tab:blue', markersize=12, linewidth=5, label='StreamingLLM')
+axes[1].plot(xvals, expected_b, marker='^', color='tab:orange', markersize=12, linewidth=5, label='ExpectedAttention')
+axes[1].plot(xvals, snap_b, marker='D', color='tab:green', markersize=12, linewidth=5, label='SnapKV')
 axes[1].set_title('Sample Index 25', fontsize=title_fontsize)
 axes[1].set_xlabel('Compression Ratio', fontsize=label_fontsize)
 axes[1].set_xticks(xtick_vals)
 axes[1].set_xticklabels([f"{x:.1f}" for x in xtick_vals], fontsize=tick_fontsize)
 axes[1].tick_params(axis='y', labelsize=tick_fontsize)
 axes[1].grid(True)
+axes[1].set_xlim(left=0)
 
 # 统一y轴范围
 y0 = axes[0].get_ylim()
