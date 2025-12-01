@@ -324,7 +324,17 @@ class LMCacheEngine:
         t = time.perf_counter()
 
         transfer_spec = kwargs.get("transfer_spec", None)
-        self.storage_manager.batched_put(keys, memory_objs, transfer_spec=transfer_spec)
+
+        if 8277 in tokens:
+            location = "LocalCPUBackend"
+        elif 8377 in tokens:
+            location = "LocalDiskBackend"
+        elif 8477 in tokens:
+            location = "RemoteBackend"
+        else:
+            location = None
+
+        self.storage_manager.batched_put(keys, memory_objs, transfer_spec=transfer_spec, location=location)
         put_time += time.perf_counter() - t
 
         tot_time = offload_time + put_time
