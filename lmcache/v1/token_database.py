@@ -290,7 +290,7 @@ class ChunkedTokenDatabase(TokenDatabase):
     ) -> Iterable[int]:
         prefix_hash = self._get_init_hash()
         for token_chunk in token_chunks:
-            prefix_hash = self._hash_tokens(token_chunk, prefix_hash)
+            prefix_hash = self._hash_tokens(token_chunk, self._get_init_hash())
             yield prefix_hash
 
     @_lmcache_nvtx_annotate

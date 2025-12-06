@@ -325,12 +325,12 @@ class LMCacheEngine:
 
         transfer_spec = kwargs.get("transfer_spec", None)
 
-        if 8277 in tokens:
-            location = "LocalCPUBackend"
+        if 8477 in tokens:
+            location = "RemoteBackend"
         elif 8377 in tokens:
             location = "LocalDiskBackend"
-        elif 8477 in tokens:
-            location = "RemoteBackend"
+        elif 8277 in tokens:
+            location = "LocalCPUBackend"
         else:
             location = None
 
@@ -1242,6 +1242,9 @@ class LMCacheEngine:
                     location = self.storage_manager.non_allocator_backends[0]
                 else:
                     location = self.storage_manager.contains(key)
+                
+                logger.debug(f"Lookup key: {key}, found at location: {location}")
+                
                 if location is None:
                     break
 
