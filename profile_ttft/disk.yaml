@@ -1,0 +1,7 @@
+chunk_size: 256
+local_cpu: False
+max_local_cpu_size: 10
+local_disk: "file:///home/tensormesh/shaotingf/kvcache/"
+max_local_disk_size: 10
+# remote_url: "mock://10/?peeking_latency=0&read_throughput=0.5&write_throughput=0.5"
+# extra_config: {'use_odirect': True}
